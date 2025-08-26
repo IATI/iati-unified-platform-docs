@@ -2,3 +2,4 @@
 
 sphinx-autobuild
 black
+yamllint
