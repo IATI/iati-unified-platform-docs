@@ -2,7 +2,7 @@
 openapi: 3.0.4
 info:
   title: Bulk Data Service API Specification
-  version: 0.1.0
+  version: 0.1.1
 servers:
   - url: 'https://bulk-data.iatistandard.org/'
 paths:
@@ -62,6 +62,7 @@ components:
         index_created_unix_timestamp:
           type: integer
           format: int
+          example: 1751005866
           nullable: false
       required:
         - datasets
@@ -117,6 +118,16 @@ components:
           format: uuid
           example: 5401c7f4-e9fd-4ce3-b184-bfe1cb71a9f8
           nullable: false
+        iati_identifier:
+          description: |
+            This field is now deprecated in favour of `organisation_identifier`
+            which is the terminology used in the Standard for this value. This
+            field and the `organisation_identifier` field will always be
+            identical.
+          type: string
+          deprecated: true
+          example: CO-ABC-123456
+          nullable: true
         organisation_identifier:
           type: string
           example: CO-ABC-123456
@@ -182,6 +193,7 @@ components:
         index_created_unix_timestamp:
           type: integer
           format: int
+          example: 1751005866
           nullable: false
       required:
         - datasets
