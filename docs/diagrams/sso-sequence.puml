@@ -1,0 +1,48 @@
+@startuml
+actor User as User
+participant "Browser" as Browser
+participant "Application" as Application
+participant "Identity Server" as IS
+participant "Register Your Data API" as RYD_API
+
+group Begin SSO
+
+User -> Browser: Clicks on button to login to IATI
+Browser -> IS: GET Authentication endpoint
+Browser <- IS: 302 Redirect to Login page
+Browser -> IS: GET Login page
+end
+
+group Get tokens
+User -> Browser: Complete username and password
+Browser -> IS: POST username and password
+IS -> Browser: 302 Redirect to authorisation endpoint
+Browser -> IS: GET authorisation endpoint
+IS -> Browser: 302 Redirect to application-provided callback
+Browser -> Application: GET application-provided callback
+Application -> IS: Call userinfo endpoint
+IS -> Application: Return id_token
+Application -> Application: Validate id_token signature
+Application -> IS: Call token endpoint
+IS -> Application: Return access_token
+Application -> Application: Validate access_token signature
+Application -> Browser: 302 Redirect to main page of application
+end
+
+Browser -> Application: Get main page of application
+
+group Call API
+Application -> RYD_API: GET /reporting-orgs with Bearer=access_token
+RYD_API -> Application: Response payload
+end
+
+Application -> Browser: Render main page with content from API
+
+group Logout
+User -> Browser: Clicks on button to logout
+Browser -> IS: Calls logout endpoint
+IS -> Browser: Redirects to application-provided logout endpoint
+Browser -> Application: GET application-provided logout endpoint
+Application -> Application: Clear stored access_token and id_token
+end
+@enduml
