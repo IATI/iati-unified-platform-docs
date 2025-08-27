@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "ibm-openapi-validator": "^1.36.1",
+    "node-plantuml": "^0.9.0",
+    "openapi-format": "^1.27.3"
+  },
+  "scripts": {
+    "render-diagrams": "puml generate docs/diagrams/sso-sequence.puml -o docs/images/sso-sequence.png",
+    "openapi-format-ryd": "npx openapi-format specifications/iati-register-your-data-api.yaml --keepComments --lineWidth=119 -o specifications/iati-register-your-data-api.yaml",
+    "openapi-format-bds": "npx openapi-format specifications/iati-bulk-data-service-api.yaml --keepComments --lineWidth=119 -o specifications/iati-bulk-data-service-api.yaml"
+  }
+}
