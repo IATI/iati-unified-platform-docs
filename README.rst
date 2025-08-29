@@ -58,9 +58,28 @@ In order to contribute to this documentation, create a new branch and make your 
 Formatting
 ----------
 
-The Python code in this repository uses the python [black](https://github.com/psf/black) formatter.
+The Python code in this repository uses the python `black <https://github.com/psf/black>`__ formatter.
 If editing in VSCode, the project is set up to format automatically on save.
-To format manually, run `black .`:
+To format manually, run ``black .``:
+
+Linting of the OpenAPI specifications in ``specifications/`` is carried out with `yamllint <https://github.com/adrienverge/yamllint>`__.  This will be checked on push and pull requests
+via GitHub Actions and can be run manually with ``yamllint specifications/.``.  The
+specifications can also be formatted using `openAPI-format <https://www.npmjs.com/package/openapi-format>`__ which is included in ``package.json`` and can be installed with ``npm install``.  To format the specifications you can use the build scripts:
+
+.. code-block:: bash
+
+  # Install dependencies from package.json.
+  npm install
+
+  # Format Bulk Data Service API specification.
+  npm run openapi-format-bds
+
+  # Format Register Your Data API specification.
+  npm run openapi-format-ryd
+
+Building diagrams
+-----------------
+The ``docs/diagrams/`` directory contains diagrams in `PlantUML format <https://plantuml.com/>`__.  These can be rendered to PNG using `node-plantuml <https://www.npmjs.com/package/node-plantuml>`__ via ``npm run render-diagrams``.  Images are placed in ``docs/images/``.
 
 Translations
 ============
