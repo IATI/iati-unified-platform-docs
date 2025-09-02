@@ -58,9 +58,21 @@ In order to contribute to this documentation, create a new branch and make your 
 Formatting
 ----------
 
-The Python code in this repository uses the python [black](https://github.com/psf/black) formatter.
+The Python code in this repository uses the python `black <https://github.com/psf/black>`__ formatter.
 If editing in VSCode, the project is set up to format automatically on save.
-To format manually, run `black .`:
+To format manually, run ``black .``:
+
+Building diagrams
+-----------------
+The ``docs/diagrams/`` directory contains diagrams in `PlantUML format <https://plantuml.com/>`__.  These can be rendered to PNG using `node-plantuml <https://www.npmjs.com/package/node-plantuml>`__ via:
+
+.. code-block:: bash
+
+  # Install dependencies from package.json.
+  npm install
+
+  # Render diagrams to docs/images
+  npm run render-diagrams
 
 Translations
 ============

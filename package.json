@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "node-plantuml": "^0.9.0"
+  },
+  "scripts": {
+    "render-diagrams": "puml generate docs/diagrams/sso-sequence.puml -o docs/images/sso-sequence.png"
+  }
+}

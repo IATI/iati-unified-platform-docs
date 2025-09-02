@@ -65,6 +65,13 @@ TODO: explain the Dashboard
 
     Datastore <datastore>
 
+.. toctree::
+    :hidden:
+    :titlesonly:
+    :maxdepth: 3
+    :caption: Register Your Data
+
+    Register Your Data API Migration Notes <register-your-data-migration>
 
 
 
