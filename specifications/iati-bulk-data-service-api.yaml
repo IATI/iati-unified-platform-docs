@@ -2,7 +2,7 @@
 openapi: 3.0.4
 info:
   title: Bulk Data Service API Specification
-  version: 0.1.1
+  version: 0.9.1
 servers:
   - url: 'https://bulk-data.iatistandard.org/'
 paths:
@@ -79,7 +79,7 @@ components:
           nullable: true
         data_portal_url:
           type: string
-          format: url
+          format: uri
           example: 'https://www.example.org/data-portal'
           nullable: true
         default_licence_id:
@@ -94,7 +94,7 @@ components:
           nullable: true
         exclusions_policy_url:
           type: string
-          format: url
+          format: uri
           example: 'https://www.example.org/exclusions-policy'
           nullable: true
         first_publication_date:
@@ -159,7 +159,7 @@ components:
           nullable: false
         website:
           type: string
-          format: url
+          format: uri
           example: 'https://www.example.org/'
           nullable: true
       required:
@@ -230,9 +230,11 @@ components:
           $ref: '#/components/schemas/dataset_download_full_details'
         last_update_check:
           description: |
-            This field is updated every time the Bulk Data Service checks the
-            dataset, regardless of whether a full download was attempted and
-            regardless of the result.
+            The date time at which the dataset file was last checked, whether
+            that check involved a `HEAD` request, a full download attempt, or
+            both.
+
+            This field is updated regardless of the result.
           type: string
           format: date-time
           example: '2025-06-27T07:31:06+00:00'
@@ -258,7 +260,7 @@ components:
           nullable: false
         source_url:
           type: string
-          format: url
+          format: uri
           example:
             'https://www.example.com/files/aidagcy/aidagcy-activity-file.xml'
           nullable: false
@@ -308,7 +310,7 @@ components:
           nullable: false
         source_url:
           type: string
-          format: url
+          format: uri
           example:
             'https://www.example.com/files/aidagcy/aidagcy-activity-file.xml'
           nullable: false
@@ -330,8 +332,19 @@ components:
           example: '"HXCCHBNTLJWWBB"'
           nullable: true
         cached_dataset_xml_url:
+          description: |
+            The URL of the cached XML copy of the dataset file. A cached copy is
+            saved only if the Bulk Data Service successfully downloaded an IATI
+            XML file.
+
+            If the XML file becomes unavailable on the source server, the cached
+            XML file is stored for ~72 hours before being removed.
+
+            If the reporting organisation unregisters the XML file from the IATI
+            Registry, the cached copy is removed as soon as the change is picked
+            up.
           type: string
-          format: url
+          format: uri
           example:
             'https://bulk-data.iatistandard.org/aidagcy/aidagcy-activity-3.xml'
           nullable: true
@@ -340,8 +353,11 @@ components:
           example: '"C1362D1244MWNQ"'
           nullable: true
         cached_dataset_zip_url:
+          description: |
+            A copy of the cached dataset that has been compressed using the ZIP
+            format.
           type: string
-          format: url
+          format: uri
           example:
             'https://bulk-data.iatistandard.org/aidagcy/aidagcy-activity-3.zip'
           nullable: true
@@ -356,10 +372,27 @@ components:
           example: '2025-06-27T07:31:06+00:00'
           nullable: true
         hash:
+          description: A SHA1 hash of the entire contents of the dataset file.
           type: string
           example: 041c7dba17b9356be78edc99016d337aa7c33f3a
           nullable: true
         hash_excluding_generated_timestamp:
+          description: |
+            A SHA1 hash of the contents of the dataset file interpreted as a
+            string after any content matching the following regular expression
+            has been removed: `generated-datetime="[^"]+"`.
+
+            Note: because applying the removal of content matching the regular
+            expression requires a string, the contents of the dataset file is
+            decoded first, according to what the `chardet` Python library
+            determines is the dataset's character set encoding (e.g., UTF-8,
+            UTF-16). But because character set encoding determination cannot be
+            guaranteed to be correct, and because Python's string encoding
+            library may not reinsert a BOM where there was on when re-encoding,
+            the value of this hash field is not guaranteed to be identical to
+            the hash of the file minus the content matched by
+            `generated-datetime="[^"]+"` when generated using other methods
+            (e.g., other libraries or programming languages).
           type: string
           example: 738a1ad14dca2451fa89e642b753101dcf57ce2f
           nullable: true
@@ -371,17 +404,23 @@ components:
             xml:lang="en" d
           nullable: true
         server_header_etag:
+          description: |
+            The contents of the `ETag` header on the source server (if one is
+            present).
           type: string
           example: '"KXDMHBNCLJWWUV"'
           nullable: true
         server_header_last_modified:
+          description: |
+            The contents of the `Last-Modified` header on the source server (if
+            one is present).
           type: string
           format: date-time
           example: '2025-06-27T07:31:06+00:00'
           nullable: true
         source_url:
           type: string
-          format: url
+          format: uri
           example:
             'https://www.example.com/files/aidagcy/aidagcy-activity-file.xml'
           nullable: true
@@ -410,13 +449,13 @@ components:
       properties:
         cached_dataset_xml_url:
           type: string
-          format: url
+          format: uri
           example:
             'https://bulk-data.iatistandard.org/aidagcy/aidagcy-activity-3.xml'
           nullable: true
         cached_dataset_zip_url:
           type: string
-          format: url
+          format: uri
           example:
             'https://bulk-data.iatistandard.org/aidagcy/aidagcy-activity-3.zip'
           nullable: true
@@ -453,10 +492,10 @@ components:
       properties:
         datetime:
           description: |
-            The time of the `HEAD` request. `HEAD` requests are only made when
-            the `source_url` is unchanged and the dataset has been successfully
-            downloaded in the last ~72 hours. This means that the time of the
-            most recent `HEAD` request may not be the same as the
+            The time of the `HEAD` request was made. `HEAD` requests are only
+            made when the `source_url` is unchanged and the dataset has been
+            successfully downloaded in the last ~72 hours. This means that the
+            time of the most recent `HEAD` request may not be the same as the
             `last_update_check`.
           type: string
           format: date-time
@@ -468,6 +507,19 @@ components:
           type: object
           nullable: false
           properties:
+            detailed_message:
+              description: |
+                A detailed error message, often produced by the relevant
+                component library.
+              type: string
+              example: |
+                "requests.exceptions.ConnectionError:
+                HTTPConnectionPool(host='www.iatistandard.com', port=80): Max
+                retries exceeded with url: / (Caused by
+                NameResolutionError(\"<urllib3.connection.HTTPConnection object
+                at 0x74b4aecaa9c0>: Failed to resolve 'www.iatistandard.com'
+                ([Errno -2] Name or service not known)\"))"
+              nullable: true
             error_type:
               description: |
                 The type of error that occurred. `other_error` indicates any
@@ -499,39 +551,32 @@ components:
               format: int
               example: 404
               nullable: true
+            source_url:
+              description: |
+                The URL which caused the error. Note that this may not be the
+                same as the current value of `source_url` because if the
+                dataset's registered `source_url` is updated then the Bulk Data
+                Service proceeds straight to a full download attempt and does
+                not attempt a `HEAD` request.
+              type: string
+              format: uri
+              example:
+                'https://www.example.com/files/aidagcy/aidagcy-activity-file.xml'
+              nullable: true
             summary_message:
               description: A succinct error message from the Bulk Data Service.
               type: string
               example: Download attempt failed due to connection timeout.
               nullable: true
-            system_message:
-              description: |
-                A detailed systems-level error message produced by the relevant
-                component library.
-              type: string
-              example: |
-                "requests.exceptions.ConnectionError:
-                HTTPConnectionPool(host='www.iatistandard.com', port=80): Max
-                retries exceeded with url: / (Caused by
-                NameResolutionError(\"<urllib3.connection.HTTPConnection object
-                at 0x74b4aecaa9c0>: Failed to resolve 'www.iatistandard.com'
-                ([Errno -2] Name or service not known)\"))"
-              nullable: true
-            url:
-              type: string
-              format: url
-              example:
-                'https://www.example.com/files/aidagcy/aidagcy-activity-file.xml'
-              nullable: true
           required:
+            - detailed_message
             - error_type
             - http_method
             - http_reason
             - http_status
             - http_headers
+            - source_url
             - summary_message
-            - system_message
-            - url
         error_occurred:
           description: |
             Indicates whether or not the `HEAD` resulted in an error. It will be
@@ -559,6 +604,13 @@ components:
       type: object
       properties:
         datetime:
+          description: |
+            The date time at which the last full download of the dataset file
+            was attempted.
+
+            It may differ from the `last_known_good_dataset.verified_on_server`
+            field because the latter is updated when a successful `HEAD` request
+            confirms the dataset file remains on the server unchanged.
           type: string
           format: date-time
           example: '2025-06-27T07:31:06+00:00'
@@ -568,6 +620,19 @@ components:
           type: object
           nullable: false
           properties:
+            detailed_message:
+              description: |
+                A detailed error message, often produced by the relevant
+                component library.
+              type: string
+              example: |
+                "requests.exceptions.ConnectionError:
+                HTTPConnectionPool(host='www.iatistandard.com', port=80): Max
+                retries exceeded with url: / (Caused by
+                NameResolutionError(\"<urllib3.connection.HTTPConnection object
+                at 0x74b4aecaa9c0>: Failed to resolve 'www.iatistandard.com'
+                ([Errno -2] Name or service not known)\"))"
+              nullable: true
             error_type:
               description: |
                 Gives details of the error encountered when making the `GET`
@@ -607,42 +672,34 @@ components:
               format: int
               example: 404
               nullable: true
+            source_url:
+              description: |
+                The url which produced the `GET` error. Note that this may not
+                be the same as the current value of `source_url` because the
+                `source_url` may have recently been updated and there may not
+                yet be any download results for the new url.
+              type: string
+              format: uri
+              example:
+                'https://www.example.com/files/aidagcy/aidagcy-activity-file.xml'
+              nullable: true
             summary_message:
               description: A succinct error message from the Bulk Data Service.
               type: string
               example: Download attempt failed due to connection timeout.
               nullable: true
-            system_message:
-              description: |
-                A detailed systems-level error message produced by the relevant
-                component library.
-              type: string
-              example: |
-                "requests.exceptions.ConnectionError:
-                HTTPConnectionPool(host='www.iatistandard.com', port=80): Max
-                retries exceeded with url: / (Caused by
-                NameResolutionError(\"<urllib3.connection.HTTPConnection object
-                at 0x74b4aecaa9c0>: Failed to resolve 'www.iatistandard.com'
-                ([Errno -2] Name or service not known)\"))"
-              nullable: true
-            url:
-              type: string
-              format: url
-              example:
-                'https://www.example.com/files/aidagcy/aidagcy-activity-file.xml'
-              nullable: true
           required:
+            - detailed_message
             - error_type
             - http_method
             - http_reason
             - http_status
             - http_headers
+            - source_url
             - summary_message
-            - system_message
-            - url
         error_occurred:
           description: |
-            Indicates whether or not the `GET` request resulted in the
+            Indicates whether or not the `GET` request resulted in a
             _**successful download of an IATI XML file**_. This means that an
             HTTP status of 200 does not necessarily indicate success. For this
             reason, this field should be used to determine success status.
