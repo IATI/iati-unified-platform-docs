@@ -143,9 +143,9 @@ html_css_files = [
 # documentation.
 #
 html_theme_options = {
-    "github_repository": "https://github.com/IATI/iati-docs-base",
-    "header_title_text": "IATI Docs Base",
-    "project_title": "IATI Docs Base",
+    "github_repository": "https://github.com/IATI/iati-unified-platform-docs",
+    "header_title_text": "IATI Unified Platform",
+    "project_title": "IATI Unified Platform",
     "languages": ["en"],
 }
 
