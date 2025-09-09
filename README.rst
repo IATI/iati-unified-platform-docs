@@ -45,6 +45,8 @@ Then go to http://localhost:8000/ in a browser.
 When you save changes to a file, it should update in the browser automatically.
 To change the language, edit the `language` variable in `docs/conf.py`.
 
+Note that if you alter the table of contents tree in `index.rst` you may need to run `sphinx-autobuild` with the `-a` and `-E` options so that the table of contents is refreshed across all pages. And if you change (or want to clear out old, renamed) non-rst files, you may need to do a `make clean` in the `docs` directory.
+
 Using VS Code
 -------------
 
