@@ -7,14 +7,16 @@
 alabaster==1.0.0
     # via sphinx
 attrs==25.3.0
-    # via referencing
+    # via
+    #   jsonschema
+    #   referencing
 babel==2.17.0
     # via
     #   sphinx
     #   sphinx-intl
-certifi==2025.6.15
+certifi==2025.8.3
     # via requests
-charset-normalizer==3.4.2
+charset-normalizer==3.4.3
     # via requests
 click==8.2.1
     # via sphinx-intl
@@ -25,7 +27,7 @@ docutils==0.21.2
     #   sphinx-togglebutton
     #   sphinxcontrib-opendataservices
     #   sphinxcontrib-opendataservices-jsonschema
-iati-sphinx-theme==3.0.0
+iati-sphinx-theme==3.1.0
     # via -r requirements.in
 idna==3.10
     # via requests
@@ -35,6 +37,7 @@ jinja2==3.1.6
     # via
     #   myst-parser
     #   sphinx
+    #   sphinxcontrib-redoc
 jscc==0.3.0
     # via sphinxcontrib-opendataservices-jsonschema
 json-merge-patch==0.3.0
@@ -47,13 +50,17 @@ jsonref==1.1.0
     # via
     #   jscc
     #   sphinxcontrib-opendataservices-jsonschema
+jsonschema==4.25.1
+    # via sphinxcontrib-redoc
+jsonschema-specifications==2025.9.1
+    # via jsonschema
 markdown-it-py==3.0.0
     # via
     #   mdit-py-plugins
     #   myst-parser
 markupsafe==3.0.2
     # via jinja2
-mdit-py-plugins==0.4.2
+mdit-py-plugins==0.5.0
     # via myst-parser
 mdurl==0.1.2
     # via markdown-it-py
@@ -66,17 +73,26 @@ packaging==25.0
 pygments==2.19.2
     # via sphinx
 pyyaml==6.0.2
-    # via myst-parser
+    # via
+    #   myst-parser
+    #   sphinxcontrib-redoc
 referencing==0.36.2
-    # via sphinxcontrib-opendataservices-jsonschema
-requests==2.32.4
+    # via
+    #   jsonschema
+    #   jsonschema-specifications
+    #   sphinxcontrib-opendataservices-jsonschema
+requests==2.32.5
     # via
     #   jscc
     #   sphinx
 roman-numerals-py==3.1.0
     # via sphinx
-rpds-py==0.25.1
-    # via referencing
+rpds-py==0.27.1
+    # via
+    #   jsonschema
+    #   referencing
+six==1.17.0
+    # via sphinxcontrib-redoc
 snowballstemmer==3.0.1
     # via sphinx
 sphinx==8.2.3
@@ -86,7 +102,8 @@ sphinx==8.2.3
     #   sphinx-intl
     #   sphinx-togglebutton
     #   sphinxcontrib-opendataservices
-sphinx-intl==2.3.1
+    #   sphinxcontrib-redoc
+sphinx-intl==2.3.2
     # via -r requirements.in
 sphinx-togglebutton==0.3.2
     # via -r requirements.in
@@ -104,6 +121,8 @@ sphinxcontrib-opendataservices-jsonschema==0.7.1
     # via sphinxcontrib-opendataservices
 sphinxcontrib-qthelp==2.0.0
     # via sphinx
+sphinxcontrib-redoc==1.6.0
+    # via -r requirements.in
 sphinxcontrib-serializinghtml==2.0.0
     # via sphinx
 urllib3==2.5.0
