@@ -1,9 +1,22 @@
-==================================
-Register Your Data Migration Notes
-==================================
+===================================
+Migrating to Register Your Data API
+===================================
+
+.. caution::
+
+    The Register Your Data API is currently under development. If you believe that you will need to use it, please contact us to discuss your work.
+
+
 
 The IATI registry will be replaced by a new system in late 2025 and **all write operations**
-to the registry will happen via the Register Your Data API.  General read operations that are not associated with updating/creating records are to be performed using the Dashboard API.
+to the registry will happen via the Register Your Data API.  Read operations that are not associated with updating/creating records are to be performed using the Dashboard API. This page is intended to help anyone migrating their software from being integrated with CKAN to being integrated with the Register Your Data API. 
+
+
+.. raw:: html
+
+   View the full <a href="api-docs/register-your-data-api.html" target="_blank">API Specification</a> (opens in a new tab)
+
+
 
 Language
 --------
@@ -172,11 +185,11 @@ after login.
 +-----------------------------------+-------------------------------------------------------+
 | ``ryd:reporting_org:users:update``| Modify users associated with reporting orgs           |
 +-----------------------------------+-------------------------------------------------------+
-| ``ryd:dataset``                  | Create and read datasets                              |
+| ``ryd:dataset``                   | Create and read datasets                              |
 +-----------------------------------+-------------------------------------------------------+
-| ``ryd:dataset:update``           | Update datasets                                       |
+| ``ryd:dataset:update``            | Update datasets                                       |
 +-----------------------------------+-------------------------------------------------------+
-| ``ryd:dataset:delete``           | Delete datasets                                       |
+| ``ryd:dataset:delete``            | Delete datasets                                       |
 +-----------------------------------+-------------------------------------------------------+
 
 

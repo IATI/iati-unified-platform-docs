@@ -1,3 +1,4 @@
+---
 openapi: 3.0.4
 info:
   title: IATI Register Your Data API
@@ -27,7 +28,7 @@ info:
     ](https://github.com/mozilla/mozilla-django-oidc) for applications
     developed in Django.
 
-    ![Diagram of typical flow](images/sso-sequence.png)
+    ![Diagram of typical flow](../_static/sso-sequence.png)
 
     Scopes control access to make API calls and it is important to check that
     the access token contains the scopes you have requested.  Authorisation to
@@ -53,7 +54,7 @@ info:
   license:
     name: GNU Affero General Public Licence 3.0
     url: "https://www.gnu.org/licenses/agpl-3.0.en.html"
-  version: 0.9.0
+  version: 0.9.1
 servers:
   - url: "https://registry.iatistandard.org/api/v1"
   - url: "https://dev.registry.iatistandard.org/api/v1"
@@ -103,6 +104,43 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ReportingOrgList"
+              example:
+                status: success
+                error: qwe
+                data:
+                  - id: 5401c7f4-e9fd-4ce3-b184-bfe1cb71a9f8
+                    user_role: editor
+                    metadata:
+                      human_readable_name: Aid Agency
+                      description: |
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua.
+                      hq_country: CO
+                      region: '489'
+                      organisation_type: Regional NGO
+                      data_portal_url: https://www.example.org/data-portal
+                      exclusions_policy_url: https://www.example.org/exclusions-policy
+                      reporting_source_type: primary_source
+                      default_licence_id: gpl-3.0
+                      contact_email: org.admin@example.org
+                      address: Fake Address
+                      phone: 123-4567-8901
+                      fax: 456-7890-1234
+                      website: https://www.example.org/
+                      short_name: aidagy
+                      organisation_identifier: CO-ABC-123456
+                      registry_approved: true
+                      first_publication_date: '2023-01-15T16:54:14+00:00'
+                      number_of_published_datasets: 12
+                      created_date: '2023-01-12T09:42:11+00:00'
+                    reporting_org_actions:
+                      - action_type: update_metadata
+                        user_application_name: IATI Account
+                        user_application_id: 59530216-574b-4b68-8489-ca869fcee193
+                        user_name: John Smith
+                        user_id: 6423b556-73de-4969-a2f1-91a38bca92b3
+                        created_date: '2023-12-25T23:00:12+00:00'
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -803,8 +841,12 @@ components:
           properties:
             status_code:
               type: integer
+              example: 200
             error_msg:
               type: string
+          example:
+            status_code: 404
+            error_msg: 'Not Found'
         data:
           type: object
     #
@@ -1284,7 +1326,7 @@ components:
                     example: 403
                   error_msg:
                     type: string
-                    example: |-
+                    example: >-
                       No authorisation to perform this operation on this
                       resource.
     OrgNotFound:
@@ -1297,6 +1339,7 @@ components:
                 type: string
                 example: failed
               data:
+                type: object
                 example: null
               error:
                 type: object
@@ -1317,6 +1360,7 @@ components:
                 type: string
                 example: failed
               data:
+                type: object
                 example: null
               error:
                 type: object
@@ -1337,6 +1381,7 @@ components:
                 type: string
                 example: failed
               data:
+                type: object
                 example: null
               error:
                 type: object

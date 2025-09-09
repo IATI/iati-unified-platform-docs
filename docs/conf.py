@@ -38,6 +38,7 @@ extensions = [
     "sphinx.ext.autodoc",
     "sphinx_togglebutton",
     "sphinx.ext.autosectionlabel",
+    "sphinxcontrib.redoc",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -60,7 +61,7 @@ master_doc = "index"
 # General information about the project.
 project = "IATI Tool: Documentation"
 copyright = (
-    "2024 United Nations Development Programme, on behalf of the IATI Secretariat"
+    "2025 United Nations Development Programme, on behalf of the IATI Secretariat"
 )
 author = "IATI Secretariat"
 
@@ -92,7 +93,7 @@ language = "en"
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This patterns also effect to html_static_path and html_extra_path
-exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", "node_modules"]
 
 # The reST default role (used for this markup: `text`) to use for all
 # documents.
@@ -142,9 +143,9 @@ html_css_files = [
 # documentation.
 #
 html_theme_options = {
-    "github_repository": "https://github.com/IATI/iati-docs-base",
-    "header_title_text": "IATI Docs Base",
-    "project_title": "IATI Docs Base",
+    "github_repository": "https://github.com/IATI/iati-unified-platform-docs",
+    "header_title_text": "IATI Unified Platform",
+    "project_title": "IATI Unified Platform",
     "languages": ["en"],
 }
 
@@ -174,7 +175,7 @@ html_theme_options = {
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ["_static"]
+html_static_path = ["_static", "images"]
 
 # Add any extra paths that contain custom files (such as robots.txt or
 # .htaccess) here, relative to this directory. These files are copied
@@ -362,3 +363,20 @@ locale_dirs = ["locale/"]  # path is example but recommended.
 gettext_compact = False  # optional.
 
 togglebutton_hint = ""
+
+redoc = [
+    {
+        "name": "IATI Bulk Data Service API",
+        "page": "api-docs/bulk-data-service-api",
+        "spec": "specifications/iati-bulk-data-service-api.yaml",
+        "embed": False,
+        "template": "_templates/redoc-custom.j2",
+    },
+    {
+        "name": "IATI Register Your Data API",
+        "page": "api-docs/register-your-data-api",
+        "spec": "specifications/iati-register-your-data-api.yaml",
+        "embed": False,
+        "template": "_templates/redoc-custom.j2",
+    },
+]

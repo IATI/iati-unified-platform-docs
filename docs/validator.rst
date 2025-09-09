@@ -2,4 +2,4 @@
 Validator
 =========
 
-TODO: migrate content from https://docs.validator.iatistandard.org
+Please see https://docs.validator.iatistandard.org

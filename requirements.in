@@ -3,3 +3,4 @@ sphinx-togglebutton
 sphinxcontrib-opendataservices
 sphinx-intl
 iati-sphinx-theme
+sphinxcontrib.redoc
