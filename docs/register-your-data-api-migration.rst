@@ -5,6 +5,10 @@ Register Your Data Migration Notes
 The IATI registry will be replaced by a new system in late 2025 and **all write operations**
 to the registry will happen via the Register Your Data API.  General read operations that are not associated with updating/creating records are to be performed using the Dashboard API.
 
+View the full `API specification`_.
+
+.. _API specification: /api-docs/register-your-data-api.html
+
 Language
 --------
 CKAN used the language of Publisher, Package (and Resource) and User.  In the new IATI
@@ -172,11 +176,11 @@ after login.
 +-----------------------------------+-------------------------------------------------------+
 | ``ryd:reporting_org:users:update``| Modify users associated with reporting orgs           |
 +-----------------------------------+-------------------------------------------------------+
-| ``ryd:dataset``                  | Create and read datasets                              |
+| ``ryd:dataset``                   | Create and read datasets                              |
 +-----------------------------------+-------------------------------------------------------+
-| ``ryd:dataset:update``           | Update datasets                                       |
+| ``ryd:dataset:update``            | Update datasets                                       |
 +-----------------------------------+-------------------------------------------------------+
-| ``ryd:dataset:delete``           | Delete datasets                                       |
+| ``ryd:dataset:delete``            | Delete datasets                                       |
 +-----------------------------------+-------------------------------------------------------+
 
 
