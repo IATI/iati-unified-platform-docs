@@ -1,0 +1,360 @@
+openapi: 3.0.3
+info:
+  title: Limited CKAN compatible API for the IATI Dashboard
+  version: 0.1.0
+  description: This implements a small part of the CKAN API, to make it easier to migrate tools. If you need a part of the API that this does not cover, please get in touch.
+paths:
+  /api/limited-ckan-compatible/organization_list:
+    get:
+      operationId: limited_ckan_compatible_organization_list_list
+      parameters:
+      - in: query
+        name: all_fields
+        schema:
+          type: string
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      tags:
+      - limited-ckan-compatible
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: limited_ckan_compatible_organization_list_create
+      tags:
+      - limited-ckan-compatible
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/limited-ckan-compatible/organization_show:
+    get:
+      operationId: limited_ckan_compatible_organization_show_retrieve
+      parameters:
+      - in: query
+        name: id
+        schema:
+          type: string
+      tags:
+      - limited-ckan-compatible
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CBCWrappedReportingOrg'
+          description: ''
+    post:
+      operationId: limited_ckan_compatible_organization_show_create
+      tags:
+      - limited-ckan-compatible
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CBCWrappedReportingOrg'
+          description: ''
+  /api/limited-ckan-compatible/package_list:
+    get:
+      operationId: limited_ckan_compatible_package_list_list
+      parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      tags:
+      - limited-ckan-compatible
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: limited_ckan_compatible_package_list_create
+      tags:
+      - limited-ckan-compatible
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/limited-ckan-compatible/package_search:
+    get:
+      operationId: limited_ckan_compatible_package_search_list
+      description: |-
+        Only a minimal part of this endpoint has been implemented.
+        It is possible to call the parameter fq with "organization:" and then the short name / slug of an organization.
+        No other calls to fq or any other parameter are supported.
+      parameters:
+      - in: query
+        name: fq
+        schema:
+          type: string
+      - name: rows
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: start
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      tags:
+      - limited-ckan-compatible
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCBCDatasetList'
+          description: ''
+    post:
+      operationId: limited_ckan_compatible_package_search_create
+      description: |-
+        Only a minimal part of this endpoint has been implemented.
+        It is possible to call the parameter fq with "organization:" and then the short name / slug of an organization.
+        No other calls to fq or any other parameter are supported.
+      tags:
+      - limited-ckan-compatible
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CBCDataset'
+          description: ''
+  /api/limited-ckan-compatible/package_show:
+    get:
+      operationId: limited_ckan_compatible_package_show_retrieve
+      parameters:
+      - in: query
+        name: id
+        schema:
+          type: string
+      tags:
+      - limited-ckan-compatible
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CBCWrappedDataset'
+          description: ''
+    post:
+      operationId: limited_ckan_compatible_package_show_create
+      tags:
+      - limited-ckan-compatible
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CBCWrappedDataset'
+          description: ''
+components:
+  schemas:
+    CBCDataset:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+        license_id:
+          type: string
+          readOnly: true
+        license_title:
+          type: string
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+        num_resources:
+          type: integer
+          readOnly: true
+        organization:
+          type: object
+          additionalProperties: {}
+          readOnly: true
+        owner_org:
+          type: string
+          readOnly: true
+        private:
+          type: boolean
+          readOnly: true
+        state:
+          type: string
+          readOnly: true
+        title:
+          type: string
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        extras:
+          type: object
+          additionalProperties: {}
+          readOnly: true
+        resources:
+          type: object
+          additionalProperties: {}
+          readOnly: true
+        publisher_source_type:
+          type: string
+          readOnly: true
+        publisher_organisation_type:
+          type: string
+          readOnly: true
+        publisher_iati_id:
+          type: string
+          readOnly: true
+        publisher_country:
+          type: string
+          readOnly: true
+      required:
+      - extras
+      - id
+      - license_id
+      - license_title
+      - name
+      - num_resources
+      - organization
+      - owner_org
+      - private
+      - publisher_country
+      - publisher_iati_id
+      - publisher_organisation_type
+      - publisher_source_type
+      - resources
+      - state
+      - title
+      - type
+    CBCReportingOrg:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+        package_count:
+          type: integer
+          readOnly: true
+        state:
+          type: string
+          readOnly: true
+        title:
+          type: string
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+      required:
+      - id
+      - name
+      - package_count
+      - state
+      - title
+      - type
+    CBCWrappedDataset:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/CBCDataset'
+      required:
+      - result
+    CBCWrappedReportingOrg:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/CBCReportingOrg'
+      required:
+      - result
+    PaginatedCBCDatasetList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?start=400&rows=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?start=200&rows=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CBCDataset'
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
