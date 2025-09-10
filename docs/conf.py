@@ -367,14 +367,14 @@ togglebutton_hint = ""
 redoc = [
     {
         "name": "IATI Bulk Data Service API",
-        "page": "api-docs/bulk-data-service-api",
+        "page": "api-docs/bulk-data-service-api.html",
         "spec": "specifications/iati-bulk-data-service-api.yaml",
         "embed": False,
         "template": "_templates/redoc-custom.j2",
     },
     {
         "name": "IATI Register Your Data API",
-        "page": "api-docs/register-your-data-api",
+        "page": "api-docs/register-your-data-api.html",
         "spec": "specifications/iati-register-your-data-api.yaml",
         "embed": False,
         "template": "_templates/redoc-custom.j2",
