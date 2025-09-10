@@ -1,5 +1,9 @@
+---
 name: CI
-on: [push]
+on:  # yamllint disable-line rule:truthy
+  push:
+    paths:
+      - "**.py"
 
 jobs:
   lint:
