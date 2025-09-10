@@ -1,0 +1,29 @@
+---
+name: API Specifications
+on:  # yamllint disable-line rule:truthy
+  pull_request: {}
+  push:
+    branches: [main]
+    paths:
+      - "docs/specifications/*.yaml"
+
+jobs:
+  build:
+    name: Linting
+    runs-on: ubuntu-latest
+    permissions:
+      statuses: write
+      checks: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Install vacuum
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          curl -fsSL https://quobix.com/scripts/install_vacuum.sh | sh
+      - name: Lint Bulk Data Service API
+        run: vacuum lint -d docs/specifications/iati-bulk-data-service-api.yaml
+      - name: Lint Register Your Data API
+        if: success() || failure()
+        run: vacuum lint -d docs/specifications/iati-register-your-data-api.yaml
