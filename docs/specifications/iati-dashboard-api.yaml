@@ -1,8 +1,11 @@
+---
 openapi: 3.0.3
 info:
   title: Dashboard API
   version: 0.1.0
   description: The new api for the dashboard website, designed as the main point of access to metadata.
+servers:
+  - url: 'https://dashboard.iatistandard.org'
 paths:
   /api/datasets/:
     get:
@@ -1168,6 +1171,8 @@ components:
           type: string
           format: uuid
           readOnly: true
+        licence_id:
+          type: string
         short_name:
           type: string
         source_url:
@@ -1181,6 +1186,7 @@ components:
           readOnly: true
       required:
       - id
+      - licence_id
       - reporting_org_id
       - reporting_org_short_name
       - short_name
@@ -1237,41 +1243,89 @@ components:
         id:
           type: string
           format: uuid
+          example: 5401c7f4-e9fd-4ce3-b184-bfe1cb71a9f8
           readOnly: true
         short_name:
           type: string
+          example: aidagcy
         human_readable_name:
           type: string
+          example: Aid Agency
         dataset_count:
           type: integer
           readOnly: true
         created_date:
+          type: string
+          format: date-time
+          example: '2023-08-27T07:31:06+00:00'
           readOnly: true
         data_portal_url:
-          readOnly: true
-        default_license_iddescription:
+          type: string
+          format: uri
+          example: 'https://www.example.org/data-portal'
+        default_licence_id:
+          type: string
+          example: gpl-3.0
+          readOnly: True
+        description:
+          type: string
+          example: >-
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua.
           readOnly: true
         exclusions_policy_url:
+          type: string
+          format: uri
+          example: 'https://www.example.org/exclusions-policy'
           readOnly: true
         first_publication_date:
+          type: string
+          format: date-time
+          example: '2025-06-27T07:31:06+00:00'
           readOnly: true
         hq_country:
+          description: >-
+            This is a codelist field. Valid values come from the code list:
+            https://iatistandard.org/en/iati-standard/203/codelists/country/
+          type: string
+          example: GB
           readOnly: true
         organisation_identifier:
+          type: string
+          example: CO-ABC-123456
           readOnly: true
         organisation_type:
+          description: >-
+            This is a codelist field. Valid values come from the code list:
+            https://iatistandard.org/en/iati-standard/203/codelists/organisationtype/
+          type: string
+          example: '23'
           readOnly: true
         region:
+          description: >-
+            This is a codelist field. Valid values come from the code list:
+            https://iatistandard.org/en/iati-standard/203/codelists/region/
+          type: string
+          example: '889'
           readOnly: true
         reporting_source_type:
+          type: string
+          example: primary-source
+          enum:
+            - primary-source
+            - secondary-source
           readOnly: true
         website:
+          type: string
+          format: uri
+          example: 'https://www.example.org/'
           readOnly: true
       required:
       - created_date
       - data_portal_url
       - dataset_count
-      - default_license_iddescription
+      - default_licence_id
+      - description
       - exclusions_policy_url
       - first_publication_date
       - hq_country

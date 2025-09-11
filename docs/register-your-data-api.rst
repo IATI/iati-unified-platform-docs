@@ -10,4 +10,4 @@ The Register Your Data API allows reporting organisations and third party tool d
 
 .. raw:: html
 
-   The <a href="../api-docs/register-your-data-api.html" target="_blank">Register Your Data API Specification</a> (opens in a new tab) explains how to register IATI files using the API.
+   The <a href="../api-docs/register-your-data-api/" target="_blank">Register Your Data API Specification</a> (opens in a new tab) explains how to register IATI files using the API.

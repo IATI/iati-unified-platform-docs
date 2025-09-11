@@ -14,7 +14,7 @@ to the registry will happen via the Register Your Data API.  Read operations tha
 
 .. raw:: html
 
-   View the full <a href="api-docs/register-your-data-api.html" target="_blank">API Specification</a> (opens in a new tab)
+   View the full <a href="api-docs/register-your-data-api/" target="_blank">API Specification</a> (opens in a new tab)
 
 
 
