@@ -367,15 +367,29 @@ togglebutton_hint = ""
 redoc = [
     {
         "name": "IATI Bulk Data Service API",
-        "page": "api-docs/bulk-data-service-api.html",
+        "page": "api-docs/bulk-data-service-api",
         "spec": "specifications/iati-bulk-data-service-api.yaml",
         "embed": False,
         "template": "_templates/redoc-custom.j2",
     },
     {
         "name": "IATI Register Your Data API",
-        "page": "api-docs/register-your-data-api.html",
+        "page": "api-docs/register-your-data-api",
         "spec": "specifications/iati-register-your-data-api.yaml",
+        "embed": False,
+        "template": "_templates/redoc-custom.j2",
+    },
+    {
+        "name": "IATI Dashboard API",
+        "page": "api-docs/dashboard-api",
+        "spec": "specifications/iati-dashboard-api.yaml",
+        "embed": False,
+        "template": "_templates/redoc-custom.j2",
+    },
+    {
+        "name": "IATI Dashboard CKAN Backwards Compatible API",
+        "page": "api-docs/dashboard-ckan-backwards-compatible-api",
+        "spec": "specifications/iati-dashboard-limited-ckan-backwards-compatible-api.yml",
         "embed": False,
         "template": "_templates/redoc-custom.j2",
     },

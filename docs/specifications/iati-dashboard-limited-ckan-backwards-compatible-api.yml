@@ -1,12 +1,18 @@
-openapi: 3.0.3
+openapi: 3.0.1
 info:
   title: Limited CKAN compatible API for the IATI Dashboard
   version: 0.1.0
   description: This implements a small part of the CKAN API, to make it easier to migrate tools. If you need a part of the API that this does not cover, please get in touch.
+servers:
+  - url: 'https://dashboard.iatistandard.org'
+
 paths:
   /api/limited-ckan-compatible/organization_list:
     get:
-      operationId: limited_ckan_compatible_organization_list_list
+      operationId: limited_ckan_compatible_organization_list_get
+      description: >-
+        Retrieve a list of organisations, passing search and paging parameters
+        in the query string.
       parameters:
       - in: query
         name: all_fields
@@ -31,22 +37,179 @@ paths:
       - basicAuth: []
       - {}
       responses:
-        '200':
-          description: No response body
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CBCReportingOrgList'
+              examples:
+                list_organisation_names:
+                  value:
+                    result:
+                    - aid-agency-1
+                    - aid-agency-2
+                    - aid-agency-3
+                list_organisations_with_details:
+                  value:
+                    result:
+                    - id: 01234567-8888-49bf-bbd6-b7ceeba9734b
+                      name: aid-agency-1
+                      package_count: 2
+                      publisher_country: GB
+                      publisher_iati_id: CO-ABC-123456
+                      publisher_organization_type: '22'
+                      state: active
+                      title: Aid Agency 1
+                    - id: 01234567-9999-49bf-bbd6-b7ceeba9734b
+                      name: aid-agency-2
+                      package_count: 1
+                      publisher_country: FR
+                      publisher_iati_id: CO-DEF-789123
+                      publisher_organization_type: '22'
+                      state: active
+                      title: Aid Agency 2
+                    - id: 01234567-0000-49bf-bbd6-b7ceeba9734b
+                      name: aid-agency-3
+                      package_count: 15
+                      publisher_country: DE
+                      publisher_iati_id: DE-GOV-456789
+                      publisher_organization_type: '23'
+                      state: active
+                      title: Aid Agency 3
     post:
-      operationId: limited_ckan_compatible_organization_list_create
+      operationId: limited_ckan_compatible_organization_list_post
+      description: >-
+        Retrieve a list of organisations, passing any search and paging
+        parameters in a form-encoded `POST` request instead of a `GET` request.
       tags:
       - limited-ckan-compatible
       security:
       - cookieAuth: []
       - basicAuth: []
       - {}
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                all_fields:
+                  type: string
+                limit:
+                  description: Number of results to return per page.
+                  type: integer
+                offset:
+                  description: The initial index from which to return the results.
+                  type: integer
       responses:
         '200':
-          description: No response body
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CBCReportingOrgList'
+              examples:
+                list_organisation_names:
+                  value:
+                    result:
+                    - aid-agency-1
+                    - aid-agency-2
+                    - aid-agency-3
+                list_organisations_with_details:
+                  value:
+                    result:
+                    - id: 01234567-8888-49bf-bbd6-b7ceeba9734b
+                      image_display_url:
+                      image_url:
+                      is_organization: true
+                      name: aid-agency-1
+                      package_count: 1
+                      publisher_agencies:
+                      publisher_constraints:
+                      publisher_contact:
+                      publisher_contact_email:
+                      publisher_country: GB
+                      publisher_data_quality:
+                      publisher_description: Voluptas consequatur magnam cumque accusamus eligendi occaecati
+                        aspernatur animi.
+                      publisher_field_exclusions:
+                      publisher_first_publish_date: '2019-08-24T14:15:22Z'
+                      publisher_frequency:
+                      publisher_frequency_select:
+                      publisher_iati_id: CO-ABC-123456
+                      publisher_implementation_schedule:
+                      publisher_organization_type: '23'
+                      publisher_record_exclusions:
+                      publisher_refs:
+                      publisher_segmentation:
+                      publisher_source_type:
+                      publisher_thresholds:
+                      publisher_timeliness:
+                      publisher_ui:
+                      state: active
+                      title: Aid Agency 1
+                    - id: 01234567-9999-49bf-bbd6-b7ceeba9734b
+                      image_display_url:
+                      image_url:
+                      is_organization: true
+                      name: aid-agency-2
+                      package_count: 1
+                      publisher_agencies:
+                      publisher_constraints:
+                      publisher_contact:
+                      publisher_contact_email:
+                      publisher_country: FR
+                      publisher_data_quality:
+                      publisher_description: Qui cupiditate sequi blanditiis ea.
+                      publisher_field_exclusions:
+                      publisher_first_publish_date: '2019-08-24T14:15:22Z'
+                      publisher_frequency:
+                      publisher_frequency_select:
+                      publisher_iati_id: ORG-ABC-789012
+                      publisher_implementation_schedule:
+                      publisher_organization_type: '22'
+                      publisher_record_exclusions:
+                      publisher_refs:
+                      publisher_segmentation:
+                      publisher_source_type:
+                      publisher_thresholds:
+                      publisher_timeliness:
+                      publisher_ui:
+                      state: active
+                      title: Aid Agency 2
+                    - id: 89012345-0000-49bf-bbd6-b7ceeba9734e
+                      image_display_url:
+                      image_url:
+                      is_organization: true
+                      name: aid-agency-3
+                      package_count: 1
+                      publisher_agencies:
+                      publisher_constraints:
+                      publisher_contact:
+                      publisher_contact_email:
+                      publisher_country: FR
+                      publisher_data_quality:
+                      publisher_description:
+                      publisher_field_exclusions: 'Sapiente necessitatibus esse molestias unde atque enim officia laudantium et.'
+                      publisher_first_publish_date: '2019-08-24T14:15:22Z'
+                      publisher_frequency:
+                      publisher_frequency_select:
+                      publisher_iati_id: CO-DEF-789012
+                      publisher_implementation_schedule:
+                      publisher_organization_type: '21'
+                      publisher_record_exclusions:
+                      publisher_refs:
+                      publisher_segmentation:
+                      publisher_source_type:
+                      publisher_thresholds:
+                      publisher_timeliness:
+                      publisher_ui:
+                      state: active
+                      title: Aid Agency 3
   /api/limited-ckan-compatible/organization_show:
     get:
-      operationId: limited_ckan_compatible_organization_show_retrieve
+      operationId: limited_ckan_compatible_organization_show_get
       parameters:
       - in: query
         name: id
@@ -60,29 +223,38 @@ paths:
       - {}
       responses:
         '200':
+          description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/CBCWrappedReportingOrg'
-          description: ''
     post:
-      operationId: limited_ckan_compatible_organization_show_create
+      operationId: limited_ckan_compatible_organization_show_post
       tags:
       - limited-ckan-compatible
       security:
       - cookieAuth: []
       - basicAuth: []
       - {}
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
       responses:
         '200':
+          description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/CBCWrappedReportingOrg'
-          description: ''
+
   /api/limited-ckan-compatible/package_list:
     get:
-      operationId: limited_ckan_compatible_package_list_list
+      operationId: limited_ckan_compatible_package_list_get
       parameters:
       - name: limit
         required: false
@@ -104,21 +276,55 @@ paths:
       - {}
       responses:
         '200':
-          description: No response body
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CBCDatasetNamesList'
+              example:
+                result:
+                - aid-agency-1-dataset-1
+                - aid-agency-1-dataset-2
+                - aid-agency-2-dataset-1
+                - aid-agency-3-file-A
+                - aid-agency-3-file-B
     post:
-      operationId: limited_ckan_compatible_package_list_create
+      operationId: limited_ckan_compatible_package_list_post
       tags:
       - limited-ckan-compatible
       security:
       - cookieAuth: []
       - basicAuth: []
       - {}
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                limit:
+                  description: Number of results to return per page.
+                  type: integer
+                offset:
+                  description: The initial index from which to return the results.
+                  type: integer
       responses:
         '200':
-          description: No response body
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CBCDatasetNamesList'
+              example:
+                result:
+                - aid-agency-1-dataset-1
+                - aid-agency-1-dataset-2
+                - aid-agency-2-dataset-1
+                - aid-agency-3-file-A
+                - aid-agency-3-file-B
   /api/limited-ckan-compatible/package_search:
     get:
-      operationId: limited_ckan_compatible_package_search_list
+      operationId: limited_ckan_compatible_package_search_get
       description: |-
         Only a minimal part of this endpoint has been implemented.
         It is possible to call the parameter fq with "organization:" and then the short name / slug of an organization.
@@ -147,14 +353,80 @@ paths:
       - basicAuth: []
       - {}
       responses:
-        '200':
+        "200":
+          description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaginatedCBCDatasetList'
-          description: ''
+              example:
+                next: 'http://api.example.org/accounts/?start=400&rows=100'
+                previous: 'http://api.example.org/accounts/?start=400&rows=100'
+                result:
+                  count: 1
+                  results:
+                  - id: 48af0984-d69b-43de-b95b-0a989bc32f44
+                    license_id: 'cc-by'
+                    license_title: ''
+                    name: 'aid-agency-dataset-1'
+                    num_resources: 0
+                    organization:
+                      approval_status: 'approved'
+                      created: '2019-08-24T14:15:22Z'
+                      description: string
+                      id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                      image_url: ''
+                      is_organization: true
+                      name: 'aid-agency'
+                      state: active
+                      title: 'Aid Agency'
+                      type: organization
+                    owner_org: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    private: false
+                    state: 'active'
+                    title: 'Aid Agency Dataset 1'
+                    type: ''
+                    extras:
+                    - key: activity_count
+                      value: "32"
+                    - key: country
+                      value: "GB"
+                    - key: data_updated
+                      value: "2025-09-02 12:38:34"
+                    - key: filetype
+                      value: activity
+                    - key: iati_version
+                      value: "2.03"
+                    - key: language
+                      value: "en"
+                    - key: validation_status
+                      value: "Warning"
+                    resources:
+                    - cache_last_updated: ''
+                      cache_url: ''
+                      created: '2025-08-02T09:08:53.025659'
+                      description: ''
+                      format: 'IATI-XML'
+                      hash: '06d18a58db0e0157e93414ede9091eb44897c108'
+                      id: '012345678-5b8f-45f6-b541-d51f19ac9fd8'
+                      last_modified: '2025-08-02T12:38:40.598334'
+                      metadata_modified: '2025-08-02T12:38:40.598334'
+                      mimetype: ''
+                      mimetype_inner: ''
+                      name: null
+                      package_id: 48af0984-d69b-43de-b95b-0a989bc32f44
+                      position: 0
+                      resource_type: string
+                      size: 462056
+                      state: active
+                      url: https://example.org/iati-activities.xml
+                      url_type: ''
+                    publisher_source_type: 'primary_source'
+                    publisher_organisation_type: '22'
+                    publisher_iati_id: 'CO-123456-123'
+                    publisher_country: 'GB'
     post:
-      operationId: limited_ckan_compatible_package_search_create
+      operationId: limited_ckan_compatible_package_search_post
       description: |-
         Only a minimal part of this endpoint has been implemented.
         It is possible to call the parameter fq with "organization:" and then the short name / slug of an organization.
@@ -165,16 +437,97 @@ paths:
       - cookieAuth: []
       - basicAuth: []
       - {}
+      requestBody:
+        description: Fields needed to make a query.
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                fq:
+                  type: string
+                rows:
+                  description: Number of results to return per page.
+                  type: integer
+                start:
+                  description: The initial index from which to return the results.
+                  type: integer
       responses:
         '200':
+          description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CBCDataset'
-          description: ''
+                $ref: '#/components/schemas/PaginatedCBCDatasetList'
+              example:
+                next: 'http://api.example.org/accounts/?start=400&rows=100'
+                previous: 'http://api.example.org/accounts/?start=400&rows=100'
+                result:
+                  count: 1
+                  results:
+                  - id: 48af0984-d69b-43de-b95b-0a989bc32f44
+                    license_id: 'cc-by'
+                    license_title: ''
+                    name: 'aid-agency-dataset-1'
+                    num_resources: 0
+                    organization:
+                      approval_status: 'approved'
+                      created: '2019-08-24T14:15:22Z'
+                      description: string
+                      id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                      image_url: ''
+                      is_organization: true
+                      name: 'aid-agency'
+                      state: active
+                      title: 'Aid Agency'
+                      type: organization
+                    owner_org: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    private: false
+                    state: 'active'
+                    title: 'Aid Agency Dataset 1'
+                    type: ''
+                    extras:
+                    - key: activity_count
+                      value: "32"
+                    - key: country
+                      value: "GB"
+                    - key: data_updated
+                      value: "2025-09-02 12:38:34"
+                    - key: filetype
+                      value: activity
+                    - key: iati_version
+                      value: "2.03"
+                    - key: language
+                      value: "en"
+                    - key: validation_status
+                      value: "Warning"
+                    resources:
+                    - cache_last_updated: ''
+                      cache_url: ''
+                      created: '2025-08-02T09:08:53.025659'
+                      description: ''
+                      format: 'IATI-XML'
+                      hash: '06d18a58db0e0157e93414ede9091eb44897c108'
+                      id: '012345678-5b8f-45f6-b541-d51f19ac9fd8'
+                      last_modified: '2025-08-02T12:38:40.598334'
+                      metadata_modified: '2025-08-02T12:38:40.598334'
+                      mimetype: ''
+                      mimetype_inner: ''
+                      name: null
+                      package_id: 48af0984-d69b-43de-b95b-0a989bc32f44
+                      position: 0
+                      resource_type: string
+                      size: 462056
+                      state: active
+                      url: https://example.org/iati-activities.xml
+                      url_type: ''
+                    publisher_source_type: 'primary_source'
+                    publisher_organisation_type: '22'
+                    publisher_iati_id: 'CO-123456-123'
+                    publisher_country: 'GB'
   /api/limited-ckan-compatible/package_show:
     get:
-      operationId: limited_ckan_compatible_package_show_retrieve
+      operationId: limited_ckan_compatible_package_show_get
       parameters:
       - in: query
         name: id
@@ -188,13 +541,88 @@ paths:
       - {}
       responses:
         '200':
+          description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/CBCWrappedDataset'
-          description: ''
+              example:
+                success: true
+                result:
+                  id: 48af0984-d69b-43de-b95b-0a989bc32f44
+                  license_id: 'cc-by'
+                  license_title: ''
+                  name: 'aid-agency-dataset-1'
+                  num_resources: 0
+                  organization:
+                    approval_status: 'approved'
+                    created: '2019-08-24T14:15:22Z'
+                    description: string
+                    id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    image_url: null
+                    is_organization: true
+                    name: 'aid-agency'
+                    state: active
+                    title: 'Aid Agency'
+                    type: organization
+                  owner_org: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                  private: false
+                  state: 'active'
+                  title: 'Aid Agency Dataset 1'
+                  type: ''
+                  extras:
+                  - key: activity_count
+                    value: "32"
+                  - key: country
+                    value: "GB"
+                  - key: data_updated
+                    value: "2025-09-02 12:38:34"
+                  - key: filetype
+                    value: activity
+                  - key: iati_version
+                    value: "2.03"
+                  - key: language
+                    value: "en"
+                  - key: validation_status
+                    value: "Warning"
+                  resources:
+                  - cache_last_updated: ''
+                    cache_url: ''
+                    created: '2025-08-02T09:08:53.025659'
+                    description: ''
+                    format: 'IATI-XML'
+                    hash: '06d18a58db0e0157e93414ede9091eb44897c108'
+                    id: '012345678-5b8f-45f6-b541-d51f19ac9fd8'
+                    last_modified: '2025-08-02T12:38:40.598334'
+                    metadata_modified: '2025-08-02T12:38:40.598334'
+                    mimetype: ''
+                    mimetype_inner: ''
+                    name: null
+                    package_id: 48af0984-d69b-43de-b95b-0a989bc32f44
+                    position: 0
+                    resource_type: string
+                    size: 462056
+                    state: active
+                    url: https://example.org/iati-activities.xml
+                    url_type: ''
+                  publisher_source_type: 'primary_source'
+                  publisher_organisation_type: '22'
+                  publisher_iati_id: 'CO-123456-123'
+                  publisher_country: 'GB'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CBCWrappedDataset'
+              example:
+                success: false
+                error:
+                  __type: "Not Found Error"
+                  message: "Not Found"
+
     post:
-      operationId: limited_ckan_compatible_package_show_create
+      operationId: limited_ckan_compatible_package_show_post
       tags:
       - limited-ckan-compatible
       security:
@@ -203,25 +631,110 @@ paths:
       - {}
       responses:
         '200':
+          description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/CBCWrappedDataset'
-          description: ''
+              example:
+                success: true
+                result:
+                  id: 48af0984-d69b-43de-b95b-0a989bc32f44
+                  license_id: 'cc-by'
+                  license_title: ''
+                  name: 'aid-agency-dataset-1'
+                  num_resources: 0
+                  organization:
+                    approval_status: 'approved'
+                    created: '2019-08-24T14:15:22Z'
+                    description: string
+                    id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    image_url: ''
+                    is_organization: true
+                    name: 'aid-agency'
+                    state: active
+                    title: 'Aid Agency'
+                    type: organization
+                  owner_org: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                  private: false
+                  state: 'active'
+                  title: 'Aid Agency Dataset 1'
+                  type: ''
+                  extras:
+                  - key: activity_count
+                    value: "32"
+                  - key: country
+                    value: "GB"
+                  - key: data_updated
+                    value: "2025-09-02 12:38:34"
+                  - key: filetype
+                    value: activity
+                  - key: iati_version
+                    value: "2.03"
+                  - key: language
+                    value: "en"
+                  - key: validation_status
+                    value: "Warning"
+                  resources:
+                  - cache_last_updated: ''
+                    cache_url: ''
+                    created: '2025-08-02T09:08:53.025659'
+                    description: ''
+                    format: 'IATI-XML'
+                    hash: '06d18a58db0e0157e93414ede9091eb44897c108'
+                    id: '012345678-5b8f-45f6-b541-d51f19ac9fd8'
+                    last_modified: '2025-08-02T12:38:40.598334'
+                    metadata_modified: '2025-08-02T12:38:40.598334'
+                    mimetype: ''
+                    mimetype_inner: ''
+                    name: null
+                    package_id: 48af0984-d69b-43de-b95b-0a989bc32f44
+                    position: 0
+                    resource_type: string
+                    size: 462056
+                    state: active
+                    url: https://example.org/iati-activities.xml
+                    url_type: ''
+                  publisher_source_type: 'primary_source'
+                  publisher_organisation_type: '22'
+                  publisher_iati_id: 'CO-123456-123'
+                  publisher_country: 'GB'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CBCWrappedDataset'
+              example:
+                success: false
+                error:
+                  __type: "Not Found Error"
+                  message: "Not Found"
 components:
   schemas:
     CBCDataset:
       type: object
       properties:
+        author:
+          $ref: '#/components/schemas/CBCUnusedNullField'
+        author_email:
+          $ref: '#/components/schemas/CBCUnusedNullField'
+        creator_user_id:
+          $ref: '#/components/schemas/CBCUnusedNullField'
         id:
           type: string
           readOnly: true
+          example: 48af0984-d69b-43de-b95b-0a989bc32f44
         license_id:
           type: string
           readOnly: true
         license_title:
           type: string
           readOnly: true
+        maintainer:
+          $ref: '#/components/schemas/CBCUnusedNullField'
+        maintainer_email:
+          $ref: '#/components/schemas/CBCUnusedNullField'
         name:
           type: string
           readOnly: true
@@ -230,13 +743,43 @@ components:
           readOnly: true
         organization:
           type: object
-          additionalProperties: {}
           readOnly: true
+          properties:
+            approval_status:
+              type: string
+              enum:
+              - "approved"
+            created:
+              type: string
+              format: date-time
+            description:
+              type: string
+            id:
+              type: string
+              format: uuid
+            image_url:
+              $ref: '#/components/schemas/CBCUnusedNullField'
+            is_organization:
+              type: boolean
+            name:
+              type: string
+            state:
+              type: string
+              enum:
+              - "active"
+            title:
+              type: string
+            type:
+              type: string
+              enum:
+              - "organization"
         owner_org:
           type: string
+          format: uuid
           readOnly: true
         private:
           type: boolean
+          example: false
           readOnly: true
         state:
           type: string
@@ -248,13 +791,65 @@ components:
           type: string
           readOnly: true
         extras:
-          type: object
-          additionalProperties: {}
-          readOnly: true
+          $ref: '#/components/schemas/CBCKeyValuePairList'
         resources:
-          type: object
-          additionalProperties: {}
+          type: array
           readOnly: true
+          items:
+            type: object
+            properties:
+              cache_last_updated:
+                $ref: '#/components/schemas/CBCUnusedNullField'
+              cache_url:
+                $ref: '#/components/schemas/CBCUnusedNullField'
+              created:
+                type: string
+                format: date-time
+                example: '2025-08-02T09:08:53.025659'
+              description:
+                $ref: '#/components/schemas/CBCUnusedNullField'
+              format:
+                type: string
+                example: IATI-XML
+              hash:
+                type: string
+                example: 06d18a58db0e0157e93414ede9091eb44897c108
+              id:
+                type: string
+                format: uuid
+                example: '012345678-5b8f-45f6-b541-d51f19ac9fd8'
+              last_modified:
+                type: string
+              metadata_modified:
+                type: string
+                format: date-time
+                example: '2025-08-02T12:38:40.598334'
+              mimetype:
+                type: string
+              mimetype_inner:
+                $ref: '#/components/schemas/CBCUnusedNullField'
+              name:
+                type: string
+              package_id:
+                type: string
+                format: uuid
+                example: 48af0984-d69b-43de-b95b-0a989bc32f44
+              position:
+                type: integer
+                example: 0
+              resource_type:
+                type: string
+              size:
+                type: integer
+                example: 462056
+              state:
+                type: string
+                example: active
+              url:
+                type: string
+                example: https://example.org/iati-activities.xml
+              url_type:
+                $ref: '#/components/schemas/CBCUnusedNullField'
         publisher_source_type:
           type: string
           readOnly: true
@@ -291,35 +886,128 @@ components:
         id:
           type: string
           readOnly: true
+          example: fdeed26f-c467-47c0-bdbd-09647ce478c6
+        image_display_url:
+          $ref: '#/components/schemas/CBCUnusedNullField'
+        image_url:
+          $ref: '#/components/schemas/CBCUnusedNullField'
+        is_organization:
+          type: boolean
+          example: true
         name:
           type: string
           readOnly: true
+          example: aid-agency-1
         package_count:
           type: integer
           readOnly: true
+          example: 1
+        publisher_agencies:
+          $ref: '#/components/schemas/CBCUnusedNullField'
+        publisher_constraints:
+          $ref: '#/components/schemas/CBCUnusedNullField'
+        publisher_contact:
+          $ref: '#/components/schemas/CBCUnusedNullField'
+        publisher_contact_email:
+          $ref: '#/components/schemas/CBCUnusedNullField'
+        publisher_country:
+          type: string
+          readOnly: true
+          example: 'AD'
+        publisher_data_quality:
+          $ref: '#/components/schemas/CBCUnusedNullField'
+        publisher_description:
+          type: string
+          readOnly: true
+          example: 'Voluptas consequatur magnam cumque accusamus eligendi occaecati aspernatur animi.'
+        publisher_field_exclusions:
+          $ref: '#/components/schemas/CBCUnusedNullField'
+        publisher_first_publish_date:
+          type: string
+          format: date-time
+        publisher_frequency:
+          $ref: '#/components/schemas/CBCUnusedNullField'
+        publisher_frequency_select:
+          $ref: '#/components/schemas/CBCUnusedNullField'
+        publisher_iati_id:
+          type: string
+          example: 'CO-ABC-123456'
+          readOnly: true
+        publisher_implementation_schedule:
+          $ref: '#/components/schemas/CBCUnusedNullField'
+        publisher_organization_type:
+          type: string
+          example: '23'
+          readOnly: true
+        publisher_record_exclusions:
+          $ref: '#/components/schemas/CBCUnusedNullField'
+        publisher_refs:
+          $ref: '#/components/schemas/CBCUnusedNullField'
+        publisher_segmentation:
+          $ref: '#/components/schemas/CBCUnusedNullField'
+        publisher_source_type:
+          $ref: '#/components/schemas/CBCUnusedNullField'
+        publisher_thresholds:
+          $ref: '#/components/schemas/CBCUnusedNullField'
+        publisher_timeliness:
+          $ref: '#/components/schemas/CBCUnusedNullField'
+        publisher_ui:
+          $ref: '#/components/schemas/CBCUnusedNullField'
         state:
           type: string
           readOnly: true
+          example: active
         title:
           type: string
-          readOnly: true
-        type:
-          type: string
+          example: 'Aid Agency 1'
           readOnly: true
       required:
       - id
+      - image_display_url
+      - image_url
+      - is_organization
       - name
       - package_count
+      - publisher_agencies
+      - publisher_constraints
+      - publisher_contact
+      - publisher_contact_email
+      - publisher_country
+      - publisher_data_quality
+      - publisher_description
+      - publisher_field_exclusions
+      - publisher_first_publish_date
+      - publisher_frequency_select
+      - publisher_iati_id
+      - publisher_implementation_schedule
+      - publisher_organization_type
+      - publisher_record_exclusions
+      - publisher_refs
+      - publisher_segmentation
+      - publisher_source_type
+      - publisher_thresholds
+      - publisher_timeliness
+      - publisher_ui
       - state
       - title
-      - type
     CBCWrappedDataset:
       type: object
       properties:
+        error:
+          type: object
+          required:
+          - __type
+          properties:
+            __type:
+              type: string
+            message:
+              type: string
+        success:
+          type: boolean
         result:
           $ref: '#/components/schemas/CBCDataset'
       required:
-      - result
+      - success
     CBCWrappedReportingOrg:
       type: object
       properties:
@@ -327,11 +1015,11 @@ components:
           $ref: '#/components/schemas/CBCReportingOrg'
       required:
       - result
-    PaginatedCBCDatasetList:
+    CBCDatasetNamesList:
       type: object
       required:
       - count
-      - results
+      - result
       properties:
         count:
           type: integer
@@ -346,10 +1034,66 @@ components:
           nullable: true
           format: uri
           example: http://api.example.org/accounts/?start=200&rows=100
-        results:
+        result:
           type: array
           items:
-            $ref: '#/components/schemas/CBCDataset'
+            type: string
+    PaginatedCBCDatasetList:
+      type: object
+      required:
+      - result
+      properties:
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?start=400&rows=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?start=200&rows=100
+        result:
+          type: object
+          properties:
+            count:
+              type: integer
+              example: 123
+            results:
+              type: array
+              items:
+                $ref: '#/components/schemas/CBCDataset'
+    CBCReportingOrgList:
+      type: object
+      properties:
+        result:
+          oneOf:
+            - type: array
+              items:
+                type: string
+            - type: array
+              items:
+                type: object
+                properties:
+                  schema:
+                    $ref: '#/components/schemas/CBCReportingOrg'
+      required:
+      - result
+    CBCKeyValuePairList:
+      type: array
+      items:
+        type: object
+        properties:
+          key:
+            type: string
+          value:
+            type: string
+      required:
+      - result
+    CBCUnusedNullField:
+      type: string
+      example: null
+      description: This field is unused and will always be null.
   securitySchemes:
     basicAuth:
       type: http
