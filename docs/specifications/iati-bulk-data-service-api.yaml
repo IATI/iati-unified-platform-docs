@@ -6,7 +6,7 @@ info:
     This document specifies the format of the Bulk Data Service index files,
     which provide information about the current download status of all IATI XML
     datasets.
-  version: 0.9.2
+  version: 0.9.3
 servers:
   - url: 'https://bulk-data.iatistandard.org'
 tags:
@@ -282,8 +282,7 @@ components:
           description: >-
             This field is now deprecated in favour of `organisation_identifier`
             which is the terminology used in the Standard for this value. This
-            field and the `organisation_identifier` field will always be
-            identical.
+            field will be removed in a future version of the API spec.
           type: string
           deprecated: true
           example: CO-ABC-123456
@@ -491,6 +490,26 @@ components:
       description: Details of a successful download of a dataset.
       type: object
       properties:
+        cached_dataset_url_xml:
+          deprecated: true
+          description: >-
+            This field is deprecated in favour of `cached_dataset_xml_url`. It
+            will be removed in a future version of the API spec.
+          type: string
+          format: uri
+          example:
+            'https://bulk-data.iatistandard.org/aidagcy/aidagcy-activity-3.xml'
+          nullable: true
+        cached_dataset_url_zip:
+          deprecated: true
+          description: >-
+            This field is deprecated in favour of `cached_dataset_zip_url`. It
+            will be removed in a future version of the API spec.
+          type: string
+          format: uri
+          example:
+            'https://bulk-data.iatistandard.org/aidagcy/aidagcy-activity-3.zip'
+          nullable: true
         cached_dataset_xml_etag:
           type: string
           example: '"HXCCHBNTLJWWBB"'
@@ -611,6 +630,26 @@ components:
       description: Minimal details of a successful download of a dataset.
       type: object
       properties:
+        cached_dataset_url_xml:
+          deprecated: true
+          description: >-
+            This field is deprecated in favour of `cached_dataset_xml_url`. It
+            will be removed in a future version of the API spec.
+          type: string
+          format: uri
+          example:
+            'https://bulk-data.iatistandard.org/aidagcy/aidagcy-activity-3.xml'
+          nullable: true
+        cached_dataset_url_zip:
+          deprecated: true
+          description: >-
+            This field is deprecated in favour of `cached_dataset_zip_url`. It
+            will be removed in a future version of the API spec.
+          type: string
+          format: uri
+          example:
+            'https://bulk-data.iatistandard.org/aidagcy/aidagcy-activity-3.zip'
+          nullable: true
         cached_dataset_xml_url:
           type: string
           format: uri
