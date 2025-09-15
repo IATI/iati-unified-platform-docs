@@ -22,8 +22,14 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           curl -fsSL https://quobix.com/scripts/install_vacuum.sh | sh
-      - name: Lint Bulk Data Service API
+      - name: Lint Bulk Data Service API Spec
         run: vacuum lint -d docs/specifications/iati-bulk-data-service-api.yaml
-      - name: Lint Register Your Data API
+      - name: Lint Register Your Data API Spec
         if: success() || failure()
         run: vacuum lint -d docs/specifications/iati-register-your-data-api.yaml
+      - name: Lint Dashboard API Spec
+        if: success() || failure()
+        run: vacuum lint -d docs/specifications/iati-dashboard-api.yaml
+      - name: Lint Limited CKAN Backwards-compatible API Spec
+        if: success() || failure()
+        run: vacuum lint -d docs/specifications/iati-dashboard-limited-ckan-backwards-compatible-api.yml
