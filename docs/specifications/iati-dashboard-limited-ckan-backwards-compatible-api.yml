@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: Limited CKAN compatible API for the IATI Dashboard
-  version: 0.1.0
+  version: 0.9.0
   description: This implements a small part of the CKAN API, to make it easier to migrate tools. If you need a part of the API that this does not cover, please get in touch.
 servers:
   - url: 'https://dashboard.iatistandard.org'

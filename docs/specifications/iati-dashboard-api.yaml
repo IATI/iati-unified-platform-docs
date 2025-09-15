@@ -2,7 +2,7 @@
 openapi: 3.0.3
 info:
   title: Dashboard API
-  version: 0.1.0
+  version: 0.9.0
   description: The new api for the dashboard website, designed as the main point of access to metadata.
 servers:
   - url: 'https://dashboard.iatistandard.org'
