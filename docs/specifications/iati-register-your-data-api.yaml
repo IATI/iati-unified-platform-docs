@@ -28,7 +28,7 @@ info:
     ](https://github.com/mozilla/mozilla-django-oidc) for applications
     developed in Django.
 
-    ![Diagram of typical flow](../_static/sso-sequence.png)
+    ![Diagram of typical flow](../../_static/sso-sequence.png)
 
     Scopes control access to make API calls and it is important to check that
     the access token contains the scopes you have requested.  Authorisation to
