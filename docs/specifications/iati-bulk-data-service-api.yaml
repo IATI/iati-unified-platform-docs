@@ -6,7 +6,7 @@ info:
     This document specifies the format of the Bulk Data Service index files,
     which provide information about the current download status of all IATI XML
     datasets.
-  version: 0.9.3
+  version: 0.9.4
 servers:
   - url: 'https://bulk-data.iatistandard.org'
 tags:
@@ -40,7 +40,7 @@ paths:
                       cached_dataset_zip_etag: '"C1362D1244MWNQ"'
                       cached_dataset_zip_url: >-
                         https://bulk-data.iatistandard.org/aidagcy/aidagcy-activity-3.zip
-                      content_length: '1612475'
+                      content_length: 1612475
                       downloaded: '2025-06-27T07:31:06+00:00'
                       hash: 041c7dba17b9356be78edc99016d337aa7c33f3a
                       hash_excluding_generated_timestamp: >-
@@ -545,9 +545,8 @@ components:
             'https://bulk-data.iatistandard.org/aidagcy/aidagcy-activity-3.zip'
           nullable: true
         content_length:
-          type: string
-          format: int
-          example: '1612475'
+          type: integer
+          example: 1612475
           nullable: true
         downloaded:
           type: string
@@ -732,10 +731,11 @@ components:
               enum:
                 - connection_error
                 - connection_timeout
-                - too_many_redirects
-                - ssl_error
-                - other_error
                 - http_non_200
+                - method_not_allowed
+                - other_error
+                - ssl_error
+                - too_many_redirects
               nullable: true
             http_headers:
               type: object
@@ -793,6 +793,7 @@ components:
             outcome.
           type: integer
           example: 200
+          nullable: true
       required:
         - datetime
         - error_details
