@@ -54,7 +54,7 @@ info:
   license:
     name: GNU Affero General Public Licence 3.0
     url: "https://www.gnu.org/licenses/agpl-3.0.en.html"
-  version: 0.9.2
+  version: 0.9.3
 servers:
   - url: "https://dev.api.registeryourdata.iatistandard.org/api/v1"
 # ===============================================================
@@ -105,7 +105,7 @@ paths:
                 $ref: "#/components/schemas/ReportingOrgList"
               example:
                 status: success
-                error: qwe
+                error: null
                 data:
                   - id: 5401c7f4-e9fd-4ce3-b184-bfe1cb71a9f8
                     user_role: editor
@@ -1049,28 +1049,26 @@ components:
           type: object
           example: null
         data:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-                format: uuid
-                example: 5401c7f4-e9fd-4ce3-b184-bfe1cb71a9f8
-              user_role:
-                type: string
-                example: admin
-              metadata:
-                allOf:
-                  - $ref: "#/components/schemas/ReportingOrgReadableData"
-                  - type: object
-                    properties:
-                      registry_approved:
-                        example: false
-                      first_publication_date:
-                        example: ""
-                      number_of_published_datasets:
-                        example: 0
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              example: 5401c7f4-e9fd-4ce3-b184-bfe1cb71a9f8
+            user_role:
+              type: string
+              example: admin
+            metadata:
+              allOf:
+                - $ref: "#/components/schemas/ReportingOrgReadableData"
+                - type: object
+                  properties:
+                    registry_approved:
+                      example: false
+                    first_publication_date:
+                      example: ""
+                    number_of_published_datasets:
+                      example: 0
     ReportingOrgRead:
       description: Example of the response where detailed metadata for an organisation has been returned.
       properties:
