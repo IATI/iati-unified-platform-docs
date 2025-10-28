@@ -54,7 +54,7 @@ info:
   license:
     name: GNU Affero General Public Licence 3.0
     url: "https://www.gnu.org/licenses/agpl-3.0.en.html"
-  version: 0.9.4
+  version: 0.9.5
 servers:
   - url: "https://dev.api.registeryourdata.iatistandard.org/api/v1"
 # ===============================================================
@@ -358,9 +358,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/UserList"
+                $ref: "#/components/schemas/UserList"
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -407,10 +405,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  # type: object
-                  $ref: "#/components/schemas/DatasetList"
+                $ref: "#/components/schemas/DatasetList"
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -618,7 +613,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/DatasetRead"
+                $ref: "#/components/schemas/DatasetSingle"
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -657,7 +652,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/DatasetRead"
+                $ref: "#/components/schemas/DatasetSingle"
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -702,7 +697,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/DatasetRead"
+                $ref: "#/components/schemas/DatasetSingle"
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -1194,6 +1189,19 @@ components:
       #
       # Dataset response schemas
       #
+    DatasetSingle:
+      description: Example of the response where a dataset has been created.
+      properties:
+        status:
+          type: string
+          example: success
+        error:
+          type: object
+          example: null
+        data:
+          type: object
+          allOf:
+            - $ref: "#/components/schemas/DatasetRead"
     DatasetList:
       description: List of datasets associated with a reporting organisation.
       properties:
