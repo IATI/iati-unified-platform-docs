@@ -140,18 +140,23 @@ paths:
         Get reporting orgs (and basic fields) that the caller has access to.  If the caller has no organisation
         authorisation then an empty list will be returned.
       parameters:
-        - name: include_meta
+        - name: offset
           in: query
           description: >-
-            Whether to include all organisation metadata with each record.  By default only returns the name and IATI
-            organisation identifier of an organisation.
+            The number of records to skip before starting to collect the result
+            set.
           required: false
           schema:
-            type: string
-            default: "no"
-            enum:
-              - "yes"
-              - "no"
+            type: integer
+            default: 0
+        - name: limit
+          in: query
+          description: >-
+            The maximum number of records to return in the response.
+          required: false
+          schema:
+            type: integer
+            default: 100
         - name: include_actions
           in: query
           description: Whether to include all organisation actions with each record.  By default does not return any.
