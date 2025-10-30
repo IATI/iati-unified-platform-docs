@@ -182,7 +182,7 @@ paths:
                         sed do eiusmod tempor incididunt ut labore et dolore
                         magna aliqua.
                       hq_country: CO
-                      region: '489'
+                      region: "489"
                       organisation_type: Regional NGO
                       data_portal_url: https://www.example.org/data-portal
                       exclusions_policy_url: https://www.example.org/exclusions-policy
@@ -196,16 +196,16 @@ paths:
                       short_name: aidagy
                       organisation_identifier: CO-ABC-123456
                       registry_approved: true
-                      first_publication_date: '2023-01-15T16:54:14+00:00'
+                      first_publication_date: "2023-01-15T16:54:14+00:00"
                       number_of_published_datasets: 12
-                      created_date: '2023-01-12T09:42:11+00:00'
+                      created_date: "2023-01-12T09:42:11+00:00"
                     reporting_org_actions:
                       - action_type: update_metadata
                         user_application_name: IATI Account
                         user_application_id: 59530216-574b-4b68-8489-ca869fcee193
                         user_name: John Smith
                         user_id: 6423b556-73de-4969-a2f1-91a38bca92b3
-                        created_date: '2023-12-25T23:00:12+00:00'
+                        created_date: "2023-12-25T23:00:12+00:00"
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -906,7 +906,7 @@ components:
               type: string
           example:
             status_code: 404
-            error_msg: 'Not Found'
+            error_msg: "Not Found"
         data:
           type: object
     #
