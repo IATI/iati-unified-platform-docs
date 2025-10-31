@@ -21,7 +21,7 @@ The IATI Registry is the list of URLs provided by reporting organisations for pu
 
 .. caution::
 
-   The IATI Registry will be replaced in late 2025 with a completely new system. The Registry will then be accessed via the IATI Dashboard
+   The IATI Registry will be replaced in late 2025 with a completely new system. Reading from the Registry will then be accessed via the IATI Dashboard. We have written a :ref:`developers guide for people who are working building tools <new_registry_dev_guide>` that will need to change content in the new registry.
 
 
 Bulk Data Service
@@ -58,6 +58,7 @@ The :ref:`Dashboard` provides a range of summaries, statistics and computed metr
     :caption: Unified Platform
 
     Overview <self>
+    Developing for the New IATI Registry <developing-for-the-new-iati-registry>
 
 .. toctree::
     :hidden:
@@ -80,6 +81,4 @@ The :ref:`Dashboard` provides a range of summaries, statistics and computed metr
     :caption: Register Data
 
     Register Your Data API <register-your-data-api>
-
-    Register Your Data API Migration Notes <register-your-data-api-migration>
 
