@@ -54,7 +54,7 @@ info:
   license:
     name: GNU Affero General Public Licence 3.0
     url: "https://www.gnu.org/licenses/agpl-3.0.en.html"
-  version: 0.9.5
+  version: 0.9.6
 servers:
   - url: "https://dev.api.registeryourdata.iatistandard.org/api/v1"
 # ===============================================================
@@ -63,6 +63,72 @@ servers:
 #
 # ===============================================================
 paths:
+  #
+  # Discoverable Reporting orgs resource endpoints
+  #
+  /discoverable-reporting-orgs:
+    get:
+      operationId: get_discoverable_reporting_orgs
+      summary: Get a list of all the reporting orgs discoverable on the Registry.
+      description: >-
+        For getting the list of reporting organisations discoverable on the
+        Registry. The list includes basic metadata about each organisation.
+        Being discoverable does not guarantee that the organisation is approved
+        to publish.
+      parameters:
+        - name: offset
+          in: query
+          description: >-
+            The number of records to skip before starting to collect the result
+            set.
+          required: false
+          schema:
+            type: integer
+            default: 0
+        - name: limit
+          in: query
+          description: >-
+            The maximum number of records to return in the response.
+          required: false
+          schema:
+            type: integer
+            default: 100
+      responses:
+        "200":
+          description: Successfully returned list of discoverable organisations.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DiscoverableReportingOrgList"
+              example:
+                status: success
+                error: null
+                data:
+                  - id: 5401c7f4-e9fd-4ce3-b184-bfe1cb71a9f8
+                    metadata:
+                      human_readable_name: Aid Agency
+                      hq_country: CO
+                      organisation_identifier: CO-ABC-123456
+                      region: "489"
+                      short_name: aidagy
+                      website: https://www.example.org/
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorised"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+      security:
+        - clientCredentials:
+            - "ryd"
+            - "ryd:reporting_org"
+        - openIdConnect:
+            - "ryd"
+            - "ryd:reporting_org"
+      tags:
+        - Discoverable Reporting Orgs
   #
   # Reporting orgs resource endpoints
   #
@@ -74,18 +140,23 @@ paths:
         Get reporting orgs (and basic fields) that the caller has access to.  If the caller has no organisation
         authorisation then an empty list will be returned.
       parameters:
-        - name: include_meta
+        - name: offset
           in: query
           description: >-
-            Whether to include all organisation metadata with each record.  By default only returns the name and IATI
-            organisation identifier of an organisation.
+            The number of records to skip before starting to collect the result
+            set.
           required: false
           schema:
-            type: string
-            default: "no"
-            enum:
-              - "yes"
-              - "no"
+            type: integer
+            default: 0
+        - name: limit
+          in: query
+          description: >-
+            The maximum number of records to return in the response.
+          required: false
+          schema:
+            type: integer
+            default: 100
         - name: include_actions
           in: query
           description: Whether to include all organisation actions with each record.  By default does not return any.
@@ -116,7 +187,7 @@ paths:
                         sed do eiusmod tempor incididunt ut labore et dolore
                         magna aliqua.
                       hq_country: CO
-                      region: '489'
+                      region: "489"
                       organisation_type: Regional NGO
                       data_portal_url: https://www.example.org/data-portal
                       exclusions_policy_url: https://www.example.org/exclusions-policy
@@ -130,16 +201,16 @@ paths:
                       short_name: aidagy
                       organisation_identifier: CO-ABC-123456
                       registry_approved: true
-                      first_publication_date: '2023-01-15T16:54:14+00:00'
+                      first_publication_date: "2023-01-15T16:54:14+00:00"
                       number_of_published_datasets: 12
-                      created_date: '2023-01-12T09:42:11+00:00'
+                      created_date: "2023-01-12T09:42:11+00:00"
                     reporting_org_actions:
                       - action_type: update_metadata
                         user_application_name: IATI Account
                         user_application_id: 59530216-574b-4b68-8489-ca869fcee193
                         user_name: John Smith
                         user_id: 6423b556-73de-4969-a2f1-91a38bca92b3
-                        created_date: '2023-12-25T23:00:12+00:00'
+                        created_date: "2023-12-25T23:00:12+00:00"
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -840,7 +911,7 @@ components:
               type: string
           example:
             status_code: 404
-            error_msg: 'Not Found'
+            error_msg: "Not Found"
         data:
           type: object
     #
@@ -940,9 +1011,37 @@ components:
               type: string
               format: date-time
               example: "2023-01-12T09:42:11+00:00"
-      #
-      # Org and Dataset action objects
-      #
+    #
+    # Discoverable Reporting org schemas
+    #
+    DiscoverableReportingOrgReadableData:
+      description: >-
+        The limited set of metadata available for discoverable reporting
+        organisations.
+      type: object
+      properties:
+        human_readable_name:
+          type: string
+          example: Aid Agency
+        hq_country:
+          type: string
+          example: CO
+        organisation_identifier:
+          type: string
+          example: CO-ABC-123456
+        region:
+          type: string
+          example: "489"
+        short_name:
+          type: string
+          example: aidagy
+        website:
+          type: string
+          format: uri
+          example: "https://www.example.org/"
+    #
+    # Org and Dataset action objects
+    #
     OrgAction:
       description: Example of an Organisation Action where organisation metadata has been updated.
       type: object
@@ -1014,6 +1113,7 @@ components:
           example: success
         error:
           type: object
+          nullable: true
           example: null
         data:
           type: array
@@ -1103,6 +1203,31 @@ components:
               type: array
               items:
                 $ref: "#/components/schemas/OrgAction"
+    #
+    # Reporting org response schemas
+    #
+    DiscoverableReportingOrgList:
+      description: Schema for a list of discoverable reporting organisations.
+      properties:
+        status:
+          type: string
+          example: success
+        error:
+          type: object
+          nullable: true
+          example: null
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+                example: 5401c7f4-e9fd-4ce3-b184-bfe1cb71a9f8
+              metadata:
+                allOf:
+                  - $ref: "#/components/schemas/DiscoverableReportingOrgReadableData"
     #
     # User response schemas
     #
@@ -1449,6 +1574,12 @@ components:
             "ryd:dataset:update": Update dataset metadata and URLs.
             "ryd:dataset:delete": Delete datasets.
 tags:
+  - name: Discoverable Reporting Orgs
+    description: |-
+      For getting the list of reporting organisations discoverable on the
+      Registry. The list includes basic metadata about each organisation. Being
+      discoverable does not guarantee that the organisation is approved to
+      publish.
   - name: Reporting Orgs
     description: |-
       For getting lists of organisations associated with a user, creating
