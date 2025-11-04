@@ -15,7 +15,7 @@ info:
     grant is also possible.  Both access tokens will be scoped to provide
     appropriate access to the API and the required scopes should be requested
     from the identity server. The access token must be forwarded in each
-    request to the API as a `Bearer` token in the `Authentication` header.
+    request to the API as a `Bearer` token in the `Authorization` header.
 
     ## OpenID Connect (OIDC)
     The diagram below illustrates the general sequence of actions from starting
@@ -54,7 +54,7 @@ info:
   license:
     name: GNU Affero General Public Licence 3.0
     url: "https://www.gnu.org/licenses/agpl-3.0.en.html"
-  version: 0.9.6
+  version: 0.9.7
 servers:
   - url: "https://dev.api.registeryourdata.iatistandard.org/api/v1"
 # ===============================================================
