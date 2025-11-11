@@ -25,7 +25,7 @@ Data is changed in the CRM by the :ref:`Register Your Data API <register-your-da
 
 Applications and Single Sign-On (SSO)
 -------------------------------------
-One of the key differences between the old CKAN-based IATI Registry and the new set-up is the use of Single Sign-On (SSO) as the method of authentication.  This has been designed to simply the user experience and enable a range of third party integrations with IATI infrastructure.  However, to enable this enhanced functionality, applications will need to be refactored to facilitate SSO via our Identity Service.  Although we emphasise SSO (via OpenID Connect) we will also support some limited OAuth2-based authentication.  
+One of the key differences between the old CKAN-based IATI Registry and the new set-up is the use of Single Sign-On (SSO) as the method of authentication.  This has been designed to simplify the user experience and enable a range of third party integrations with IATI infrastructure.  However, to enable this enhanced functionality, applications will need to be refactored to facilitate SSO via our Identity Service.  Although we emphasise SSO (via OpenID Connect) we will also support some limited OAuth2-based authentication.  
 
 OAuth2/OpenID Connect interactions with the Identity Service yield a short-lived access token that will be used to access an API for write access to the CRM.  Details of how to use the access token are provided in the :ref:`Register Your Data API specification <register-your-data-api>`.  We intend to support three modes of connection:
 
