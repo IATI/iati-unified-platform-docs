@@ -58,7 +58,13 @@ The :ref:`Dashboard` provides a range of summaries, statistics and computed metr
     :caption: Unified Platform
 
     Overview <self>
-    Developing for the New IATI Registry <developing-for-the-new-iati-registry>
+
+.. toctree::
+    :hidden:
+    :titlesonly:
+    :maxdepth: 3
+    :caption: IATI Registry Replacement
+    Developer Guide <developer-guide-registry-replacement>
 
 .. toctree::
     :hidden:
