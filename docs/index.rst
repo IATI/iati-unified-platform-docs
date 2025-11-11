@@ -65,7 +65,7 @@ The :ref:`Dashboard` provides a range of summaries, statistics and computed metr
     :maxdepth: 3
     :caption: IATI Registry Replacement
 
-    Bulk Data Service <developer-guide-registry-replacement>
+    Developer Guide <developer-guide-registry-replacement>
 
 
 .. toctree::
