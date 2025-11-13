@@ -1,3 +1,4 @@
+.. _register-your-data-api:
 ======================
 Register Your Data API
 ======================
