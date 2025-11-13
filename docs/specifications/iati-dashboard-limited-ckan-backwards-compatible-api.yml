@@ -427,7 +427,7 @@ paths:
                       url: https://example.org/iati-activities.xml
                       url_type: ''
                     publisher_source_type: 'primary_source'
-                    publisher_organisation_type: '22'
+                    publisher_organization_type: '22'
                     publisher_iati_id: 'CO-123456-123'
                     publisher_country: 'GB'
     post:
@@ -527,7 +527,7 @@ paths:
                       url: https://example.org/iati-activities.xml
                       url_type: ''
                     publisher_source_type: 'primary_source'
-                    publisher_organisation_type: '22'
+                    publisher_organization_type: '22'
                     publisher_iati_id: 'CO-123456-123'
                     publisher_country: 'GB'
   /api/limited-ckan-compatible/package_show:
@@ -611,7 +611,7 @@ paths:
                     url: https://example.org/iati-activities.xml
                     url_type: ''
                   publisher_source_type: 'primary_source'
-                  publisher_organisation_type: '22'
+                  publisher_organization_type: '22'
                   publisher_iati_id: 'CO-123456-123'
                   publisher_country: 'GB'
         '404':
@@ -701,7 +701,7 @@ paths:
                     url: https://example.org/iati-activities.xml
                     url_type: ''
                   publisher_source_type: 'primary_source'
-                  publisher_organisation_type: '22'
+                  publisher_organization_type: '22'
                   publisher_iati_id: 'CO-123456-123'
                   publisher_country: 'GB'
         '404':
@@ -844,6 +844,8 @@ components:
                 example: 0
               resource_type:
                 type: string
+              revision_id:
+                $ref: '#/components/schemas/CBCUnusedNullField'
               size:
                 type: integer
                 example: 462056
@@ -858,7 +860,7 @@ components:
         publisher_source_type:
           type: string
           readOnly: true
-        publisher_organisation_type:
+        publisher_organization_type:
           type: string
           readOnly: true
         publisher_iati_id:
@@ -879,7 +881,7 @@ components:
       - private
       - publisher_country
       - publisher_iati_id
-      - publisher_organisation_type
+      - publisher_organization_type
       - publisher_source_type
       - resources
       - state
@@ -888,6 +890,10 @@ components:
     CBCReportingOrg:
       type: object
       properties:
+        description:
+          type: string
+          readOnly: true
+          example: ''
         id:
           type: string
           readOnly: true
@@ -898,7 +904,11 @@ components:
           $ref: '#/components/schemas/CBCUnusedNullField'
         is_organization:
           type: boolean
+          readOnly: true
           example: true
+        license_id:
+          type: string
+          readOnly: true
         name:
           type: string
           readOnly: true
@@ -929,6 +939,7 @@ components:
           $ref: '#/components/schemas/CBCUnusedNullField'
         publisher_first_publish_date:
           type: string
+          readOnly: true
           format: date-time
         publisher_frequency:
           $ref: '#/components/schemas/CBCUnusedNullField'
@@ -965,6 +976,26 @@ components:
         title:
           type: string
           example: 'Aid Agency 1'
+          readOnly: true
+        type:
+          type: string
+          example: 'organization'
+          readOnly: true
+        tags:
+          type: array
+          items: {}
+          readOnly: true
+        groups:
+          type: array
+          items: {}
+          readOnly: true
+        users:
+          type: array
+          items: {}
+          readOnly: true
+        historical_publisher_names:
+          type: array
+          items: {}
           readOnly: true
       required:
       - id
@@ -1016,10 +1047,14 @@ components:
     CBCWrappedReportingOrg:
       type: object
       properties:
+        success:
+          type: boolean
+          readOnly: true
         result:
           $ref: '#/components/schemas/CBCReportingOrg'
       required:
       - result
+      - success
     CBCDatasetNamesList:
       type: object
       required:
