@@ -327,9 +327,14 @@ paths:
       operationId: limited_ckan_compatible_package_search_get
       description: |-
         Only a minimal part of this endpoint has been implemented.
-        It is possible to call the parameter fq with "organization:" and then the short name / slug of an organization.
-        No other calls to fq or any other parameter are supported.
+        We support pagination, and a limited set of queries to the q and fq arguments.
+        Only these field names are supported: organization, owner_org, publisher_iati_id, extras_filetype
+        And, they can be combined with " AND "
       parameters:
+      - in: query
+        name: q
+        schema:
+          type: string
       - in: query
         name: fq
         schema:
