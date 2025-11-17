@@ -54,7 +54,7 @@ info:
   license:
     name: GNU Affero General Public Licence 3.0
     url: "https://www.gnu.org/licenses/agpl-3.0.en.html"
-  version: 0.9.7
+  version: 0.9.8
 servers:
   - url: "https://dev.api.registeryourdata.iatistandard.org/api/v1"
 # ===============================================================
@@ -76,19 +76,18 @@ paths:
         Being discoverable does not guarantee that the organisation is approved
         to publish.
       parameters:
-        - name: offset
+        - name: page
           in: query
           description: >-
-            The number of records to skip before starting to collect the result
-            set.
+            The page number to retrieve. Defaults to 1.
           required: false
           schema:
             type: integer
-            default: 0
-        - name: limit
+            default: 1
+        - name: page_size
           in: query
           description: >-
-            The maximum number of records to return in the response.
+            The number of records to return per page. Defaults to 100.
           required: false
           schema:
             type: integer
@@ -99,7 +98,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/DiscoverableReportingOrgList"
+                allOf:
+                  - $ref: "#/components/schemas/DiscoverableReportingOrgList"
+                  - $ref: "#/components/schemas/PaginationEnvelopeData"
               example:
                 status: success
                 error: null
@@ -112,6 +113,24 @@ paths:
                       region: "489"
                       short_name: aidagy
                       website: https://www.example.org/
+                  - id: 9285b3cc-e819-467a-9e77-92351771eee1
+                    metadata:
+                      human_readable_name: Gov Aid Agency
+                      hq_country: GB
+                      organisation_identifier: GB-ABC-123456
+                      region: "89"
+                      short_name: aidagy
+                      website: https://www.example.org/
+                pagination:
+                  page: 1
+                  page_size: 2
+                  total_pages: 5
+                  total_records: 10
+                  links:
+                    first: https://dev.api.registeryourdata.iatistandard.org/api/v1/discoverable-reporting-orgs?page=1&page_size=2
+                    last: https://dev.api.registeryourdata.iatistandard.org/api/v1/discoverable-reporting-orgs?page=5&page_size=2
+                    next: https://dev.api.registeryourdata.iatistandard.org/api/v1/discoverable-reporting-orgs?page=2&page_size=2
+                    prev: null
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -140,19 +159,18 @@ paths:
         Get reporting orgs (and basic fields) that the caller has access to.  If the caller has no organisation
         authorisation then an empty list will be returned.
       parameters:
-        - name: offset
+        - name: page
           in: query
           description: >-
-            The number of records to skip before starting to collect the result
-            set.
+            The page number to retrieve. Defaults to 1.
           required: false
           schema:
             type: integer
-            default: 0
-        - name: limit
+            default: 1
+        - name: page_size
           in: query
           description: >-
-            The maximum number of records to return in the response.
+            The number of records to return per page. Defaults to 100.
           required: false
           schema:
             type: integer
@@ -173,7 +191,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ReportingOrgList"
+                allOf:
+                  - $ref: "#/components/schemas/ReportingOrgList"
+                  - $ref: "#/components/schemas/PaginationEnvelopeData"
               example:
                 status: success
                 error: null
@@ -206,11 +226,59 @@ paths:
                       created_date: "2023-01-12T09:42:11+00:00"
                     reporting_org_actions:
                       - action_type: update_metadata
-                        user_application_name: IATI Account
-                        user_application_id: 59530216-574b-4b68-8489-ca869fcee193
-                        user_name: John Smith
-                        user_id: 6423b556-73de-4969-a2f1-91a38bca92b3
                         created_date: "2023-12-25T23:00:12+00:00"
+                        responsible_org_id: 0f851b98-914b-472d-89f6-301fc04f40e0
+                        responsible_org_name: Agency One
+                        user_application_id: 59530216-574b-4b68-8489-ca869fcee193
+                        user_application_name: IATI Account
+                        user_id: 6423b556-73de-4969-a2f1-91a38bca92b3
+                        user_name: John Smith
+                  - id: 9d83530b-b5d0-489f-a2c9-26bc7af8ca75
+                    user_role: contributor
+                    metadata:
+                      human_readable_name: Gov Aid Agency
+                      description: |
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua.
+                      hq_country: CO
+                      region: "89"
+                      organisation_type: Regional NGO
+                      data_portal_url: https://www.example.org/data-portal
+                      exclusions_policy_url: https://www.example.org/exclusions-policy
+                      reporting_source_type: primary_source
+                      default_licence_id: gpl-3.0
+                      contact_email: org.admin@example.org
+                      address: Fake Address
+                      phone: 123-4567-8901
+                      fax: 456-7890-1234
+                      website: https://www.example.org/
+                      short_name: aidagy
+                      organisation_identifier: GB-ABC-123456
+                      registry_approved: true
+                      first_publication_date: "2024-01-15T16:54:14+00:00"
+                      number_of_published_datasets: 12
+                      created_date: "2023-01-12T09:42:11+00:00"
+                    reporting_org_actions:
+                      - action_type: update_metadata
+                        created_date: "2023-12-25T23:00:12+00:00"
+                        id: 9d83530b-b5d0-489f-a2c9-26bc7af8ca75
+                        responsible_org_id: 0f851b98-914b-472d-89f6-301fc04f40e0
+                        responsible_org_name: Agency One
+                        user_application_id: 59530216-574b-4b68-8489-ca869fcee193
+                        user_application_name: IATI Account
+                        user_id: 6423b556-73de-4969-a2f1-91a38bca92b3
+                        user_name: John Smith
+                pagination:
+                  page: 1
+                  page_size: 2
+                  total_pages: 5
+                  total_records: 10
+                  links:
+                    first: https://dev.api.registeryourdata.iatistandard.org/api/v1/reporting-orgs?page=1&page_size=2
+                    last: https://dev.api.registeryourdata.iatistandard.org/api/v1/reporting-orgs?page=5&page_size=2
+                    next: https://dev.api.registeryourdata.iatistandard.org/api/v1/reporting-orgs?page=2&page_size=2
+                    prev: null
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -342,7 +410,7 @@ paths:
               $ref: "#/components/schemas/ReportingOrgUpdateableData"
       responses:
         "200":
-          description: Successfuly updated organisation record.
+          description: Successfully processed request.
           content:
             application/json:
               schema:
@@ -470,13 +538,67 @@ paths:
             enum:
               - "yes"
               - "no"
+        - name: page
+          in: query
+          description: >-
+            The page number to retrieve. Defaults to 1.
+          required: false
+          schema:
+            type: integer
+            default: 1
+        - name: page_size
+          in: query
+          description: >-
+            The number of records to return per page. Defaults to 100.
+          required: false
+          schema:
+            type: integer
+            default: 100
       responses:
         "200":
           description: Successfully returned list of datasets.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/DatasetList"
+                allOf:
+                  - $ref: "#/components/schemas/DatasetList"
+                  - $ref: "#/components/schemas/PaginationEnvelopeData"
+              example:
+                status: success
+                error: null
+                data:
+                  - id: 123e4567-e89b-12d3-a456-426614174000
+                    owner_organisation_id: 5401c7f4-e9fd-4ce3-b184-bfe1cb71a9f8
+                    metadata:
+                      human_readable_name: Sample IATI Dataset
+                      short_name: sample-dataset
+                      source_type: primary_source
+                      url: https://data.example.org/iati/sample-dataset.xml
+                      visibility: public
+                      licence_id: gpl-3.0
+                      last_url_update_date: "2023-10-15T10:30:00+00:00"
+                      last_metadata_update_date: "2023-10-20T14:45:00+00:00"
+                  - id: 45d5d08d-d348-4b77-a9b3-6caad465295d
+                    owner_organisation_id: 5401c7f4-e9fd-4ce3-b184-bfe1cb71a9f8
+                    metadata:
+                      human_readable_name: Sample Dataset 2
+                      short_name: sample-dataset-2
+                      source_type: secondary_source
+                      url: https://data.example.org/iati/sample-dataset-2.xml
+                      visibility: public
+                      licence_id: gpl-3.0
+                      last_url_update_date: "2023-10-15T10:30:00+00:00"
+                      last_metadata_update_date: "2023-10-20T14:45:00+00:00"
+                pagination:
+                  page: 1
+                  page_size: 2
+                  total_pages: 5
+                  total_records: 10
+                  links:
+                    first: https://dev.api.registeryourdata.iatistandard.org/api/v1/reporting-orgs/5401c7f4-e9fd-4ce3-b184-bfe1cb71a9f8/datasets?page=1&page_size=2
+                    last: https://dev.api.registeryourdata.iatistandard.org/api/v1/reporting-orgs/5401c7f4-e9fd-4ce3-b184-bfe1cb71a9f8/datasets?page=5&page_size=2
+                    next: https://dev.api.registeryourdata.iatistandard.org/api/v1/reporting-orgs/5401c7f4-e9fd-4ce3-b184-bfe1cb71a9f8/datasets?page=2&page_size=2
+                    prev: null
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -588,9 +710,10 @@ paths:
                     - admin
                     - editor
                     - contributor
+                    - contributor_pending
       responses:
         "200":
-          description: Successfully changed user role.
+          description: Successfully processed request.
           content:
             application/json:
               schema:
@@ -676,7 +799,7 @@ paths:
           application/json:
             schema:
               allOf:
-                - $ref: "#/components/schemas/DatasetUpdateableData"
+                - $ref: "#/components/schemas/DatasetFullUpdateableData"
                 - $ref: "#/components/schemas/DatasetOwnerOrg"
       responses:
         "201":
@@ -760,11 +883,33 @@ paths:
         content:
           application/json:
             schema:
-              allOf:
-                - $ref: "#/components/schemas/DatasetUpdateableData"
+              oneOf:
+                - $ref: "#/components/schemas/DatasetBasicUpdateableData"
+                - $ref: "#/components/schemas/DatasetFullUpdateableData"
+            examples:
+              basic_update:
+                summary: Basic update example
+                value:
+                  human_readable_name: "Dataset 1"
+                  licence_id: cc-by
+                  short_name: aid-org-dataset-1
+                  source_type: primary_source
+                  url: https://data.example.org/dataset-1.xml
+              full_update:
+                summary: Full update example
+                description: >-
+                  Note: only users with `ADMIN` permission for a reporting
+                  organisation can update the `visibility` field.
+                value:
+                  human_readable_name: "Dataset 2"
+                  licence_id: cc-by
+                  short_name: aid-org-dataset-2
+                  source_type: secondary_source
+                  url: https://data.example.org/dataset-2.xml
+                  visibility: public
       responses:
         "200":
-          description: Successfully updated dataset.
+          description: Successfully processed request.
           content:
             application/json:
               schema:
@@ -915,6 +1060,43 @@ components:
         data:
           type: object
     #
+    # Pagination schema
+    #
+    PaginationEnvelopeData:
+      description: Pagination metadata for list responses.
+      type: object
+      properties:
+        pagination:
+          type: object
+          properties:
+            page:
+              type: integer
+              example: 1
+            page_size:
+              type: integer
+              example: 100
+            total_pages:
+              type: integer
+              example: 12
+            total_records:
+              type: integer
+              example: 1150
+            links:
+              type: object
+              properties:
+                first:
+                  type: string
+                  format: uri
+                last:
+                  type: string
+                  format: uri
+                next:
+                  type: string
+                  format: uri
+                prev:
+                  type: string
+                  format: uri
+    #
     # Reporting org schemas
     #
     ReportingOrgUpdateableData:
@@ -1053,24 +1235,35 @@ components:
             - update_metadata
             - delete
           example: update_metadata
-        user_application_name:
+        created_date:
           type: string
-          example: IATI Account
+          format: date-time
+          example: "2025-10-25T23:00:12+00:00"
+        id:
+          type: string
+          format: uuid
+          example: d1f7c3e2-8f4b-4c2a-9f3e-2b1c4d5e6f7a
+        responsible_org_id:
+          type: string
+          format: uuid
+          example: 5401c7f4-e9fd-4ce3-b184-bfe1cb71a9f8
+        responsible_org_name:
+          type: string
+          example: Aid Agency
         user_application_id:
           type: string
           format: uuid
           example: 59530216-574b-4b68-8489-ca869fcee193
-        user_name:
+        user_application_name:
           type: string
-          example: John Smith
+          example: IATI Account
         user_id:
           type: string
           format: uuid
           example: 6423b556-73de-4969-a2f1-91a38bca92b3
-        created_date:
+        user_name:
           type: string
-          format: date-time
-          example: "2023-12-25T23:00:12+00:00"
+          example: John Smith
     DatasetAction:
       description: Example of a Dataset Action where a dataset has been updated.
       type: object
@@ -1084,24 +1277,35 @@ components:
             - change_visibility
             - delete
           example: update_url
-        user_application_name:
+        created_date:
           type: string
-          example: IATI Account
+          format: date-time
+          example: "2025-10-25T23:00:12+00:00"
+        id:
+          type: string
+          format: uuid
+          example: d1f7c3e2-8f4b-4c2a-9f3e-2b1c4d5e6f7a
+        responsible_org_id:
+          type: string
+          format: uuid
+          example: 5401c7f4-e9fd-4ce3-b184-bfe1cb71a9f8
+        responsible_org_name:
+          type: string
+          example: Aid Agency
         user_application_id:
           type: string
           format: uuid
           example: 59530216-574b-4b68-8489-ca869fcee193
-        user_name:
+        user_application_name:
           type: string
-          example: John Smith
+          example: IATI Account
         user_id:
           type: string
           format: uuid
           example: 6423b556-73de-4969-a2f1-91a38bca92b3
-        created_date:
+        user_name:
           type: string
-          format: date-time
-          example: "2023-12-25T23:00:12+00:00"
+          example: John Smith
     #
     # Reporting org response schemas
     #
@@ -1258,6 +1462,11 @@ components:
               role:
                 type: string
                 example: admin
+                enum:
+                  - admin
+                  - editor
+                  - contributor
+                  - contributor_pending
     #
     # Dataset schemas
     #
@@ -1269,7 +1478,7 @@ components:
           type: string
           format: uuid
           example: 5401c7f4-e9fd-4ce3-b184-bfe1cb71a9f8
-    DatasetUpdateableData:
+    DatasetBasicUpdateableData:
       description: >-
         Some dataset metadata can not be updated through the API.  This schema contains only that data which can be
         changed.
@@ -1291,16 +1500,27 @@ components:
           type: string
           format: uri
           example: "https://www.example.org/datasets/activity3.xml"
-        visibility:
-          type: string
-          example: public
         licence_id:
           type: string
           example: gpl-3.0
+    DatasetFullUpdateableData:
+      description: >-
+        Some dataset metadata can not be updated through the API.  This schema contains only that data which can be
+        changed.
+      allOf:
+        - $ref: "#/components/schemas/DatasetBasicUpdateableData"
+        - type: object
+          properties:
+            visibility:
+              type: string
+              example: public
+              enum:
+                - public
+                - private
     DatasetReadableData:
       description: Example schema for dataset metadata that is readable.
       allOf:
-        - $ref: "#/components/schemas/DatasetUpdateableData"
+        - $ref: "#/components/schemas/DatasetFullUpdateableData"
         - type: object
           properties:
             last_url_update_date:
