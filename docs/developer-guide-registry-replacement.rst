@@ -81,9 +81,9 @@ Access control to call certain API endpoints are restricted using OAuth2 scopes.
 +-----------------------------------+-------------------------------------------------------+
 | ``ryd:reporting_org:delete``      | Delete reporting orgs                                 |
 +-----------------------------------+-------------------------------------------------------+
-| ``ryd:reporting_org:users``       | List and request to be associated with a reporting org|
+| ``ryd:reporting_org:user``       | List and request to be associated with a reporting org|
 +-----------------------------------+-------------------------------------------------------+
-| ``ryd:reporting_org:users:update``| Modify users associated with reporting orgs           |
+| ``ryd:reporting_org:user:update``| Modify users associated with reporting orgs           |
 +-----------------------------------+-------------------------------------------------------+
 | ``ryd:dataset``                   | Create and read datasets                              |
 +-----------------------------------+-------------------------------------------------------+
