@@ -946,6 +946,19 @@ paths:
           $ref: "#/components/responses/Forbidden"
         "404":
           $ref: "#/components/responses/DatasetNotFound"
+        "409":
+          description: Conflict with existing Registry data.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/Conflict"
+              example:
+                status: failed
+                error:
+                  status_code: 409
+                  error_msg: >-
+                    Error: unable to update dataset as there is already a dataset with that short_name in the Registry.
+                data: null
         "500":
           $ref: "#/components/responses/InternalServerError"
       security:
