@@ -54,7 +54,7 @@ info:
   license:
     name: GNU Affero General Public Licence 3.0
     url: "https://www.gnu.org/licenses/agpl-3.0.en.html"
-  version: 0.9.8
+  version: 0.9.9
 servers:
   - url: "https://dev.api.registeryourdata.iatistandard.org/api/v1"
 # ===============================================================
@@ -321,6 +321,18 @@ paths:
           $ref: "#/components/responses/Unauthorised"
         "403":
           $ref: "#/components/responses/Forbidden"
+        "409":
+          description: Conflict with existing Registry data.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/Conflict"
+              example:
+                status: failed
+                error:
+                  status_code: 409
+                  error_msg: There is already a reporting_org with that short_name in the Registry.
+                data: null
         "500":
           $ref: "#/components/responses/InternalServerError"
       security:
@@ -816,6 +828,18 @@ paths:
           $ref: "#/components/responses/Forbidden"
         "404":
           $ref: "#/components/responses/OrgNotFound"
+        "409":
+          description: Conflict with existing Registry data.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/Conflict"
+              example:
+                status: failed
+                error:
+                  status_code: 409
+                  error_msg: There is already a dataset with that short_name in the Registry.
+                data: null
         "500":
           $ref: "#/components/responses/InternalServerError"
       security:
@@ -1745,6 +1769,27 @@ components:
                   error_msg:
                     type: string
                     example: UUID is not known in the registry.
+    Conflict:
+      description: Returned if the data submitted conflicts with existing Registry data.
+      content:
+        application/json:
+          schema:
+            properties:
+              status:
+                type: string
+                example: failed
+              data:
+                example: null
+              error:
+                type: object
+                properties:
+                  status_code:
+                    type: integer
+                    example: 409
+                  error_msg:
+                    type: string
+                    example: >-
+                      There is already a dataset with that short_name in the Registry.
     InternalServerError:
       description: Returned for a range of internal server issues.
       content:
