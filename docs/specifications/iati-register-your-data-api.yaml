@@ -54,7 +54,7 @@ info:
   license:
     name: GNU Affero General Public Licence 3.0
     url: "https://www.gnu.org/licenses/agpl-3.0.en.html"
-  version: 0.9.9
+  version: 0.9.10
 servers:
   - url: "https://dev.api.registeryourdata.iatistandard.org/api/v1"
 # ===============================================================
