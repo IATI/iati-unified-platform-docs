@@ -13,15 +13,14 @@ IATI provides a number of tools to access IATI data. For more information and to
 Platform Overview
 -----------------
 
-IATI Registry
-~~~~~~~~~~~~~
+Register Your Data service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The IATI Registry is the list of URLs provided by reporting organisations for publication of their IATI data. It is provided at `iatiregistry.org <https://iatiregistry.org>`_.
+The IATI Registry was replaced in December 2025. We have written a :ref:`developers guide <new_registry_dev_guide>` to help adapt tools to work with the new set up.
 
+Information about reporting organisations and their IATI files is now available on the `IATI Dashboard <https://dashboard.iatistandard.org/publishers/>`_.
 
-.. caution::
-
-   The IATI Registry will be replaced in late 2025 with a completely new system. Reading from the Registry will then be accessed via the IATI Dashboard. We have written a :ref:`developers guide for people who are working building tools <new_registry_dev_guide>` that will need to change content in the new registry.
+Reporting organisations can manage their IATI file information in `IATI Account <https://account.iatistandard.org/>`_.
 
 
 Bulk Data Service
