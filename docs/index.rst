@@ -13,8 +13,8 @@ IATI provides a number of tools to access IATI data. For more information and to
 Platform Overview
 -----------------
 
-IATI Registry replacement
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+Register Your Data service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The IATI Registry was replaced in December 2025. We have written a :ref:`developers guide <new_registry_dev_guide>` to help adapt tools to work with the new set up.
 
