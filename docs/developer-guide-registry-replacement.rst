@@ -3,9 +3,9 @@
 Developer Guide (IATI Registry replacement)
 ===========================================
 
-.. caution::
+.. attention::
 
-    The IATI Registry will be replaced in December 2025. If you believe that you will technically rely on the contents of these documents, please `contact us <https://iatistandard.org/en/guidance/get-support/>`_ to discuss your work.
+    The IATI Registry was replaced in December 2025. If you believe that you will rely on the contents of these documents, please `contact us <https://iatistandard.org/en/guidance/get-support/>`_ to discuss your work.
 
 .. contents::
    :depth: 3
