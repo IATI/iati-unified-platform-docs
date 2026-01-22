@@ -208,7 +208,7 @@ paths:
                         magna aliqua.
                       hq_country: CO
                       region: "489"
-                      organisation_type: Regional NGO
+                      organisation_type: 23
                       data_portal_url: https://www.example.org/data-portal
                       exclusions_policy_url: https://www.example.org/exclusions-policy
                       reporting_source_type: primary_source
@@ -243,7 +243,7 @@ paths:
                         magna aliqua.
                       hq_country: CO
                       region: "89"
-                      organisation_type: Regional NGO
+                      organisation_type: 23
                       data_portal_url: https://www.example.org/data-portal
                       exclusions_policy_url: https://www.example.org/exclusions-policy
                       reporting_source_type: primary_source
@@ -1151,14 +1151,23 @@ components:
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
             dolore magna aliqua.
         hq_country:
+          description: >-
+            This is a codelist field. Valid values come from the code list:
+            https://iatistandard.org/en/iati-standard/203/codelists/country/
           type: string
           example: CO
         region:
+          description: >-
+            This is a codelist field. Valid values come from the code list:
+            https://iatistandard.org/en/iati-standard/203/codelists/region/
           type: string
-          example: "489"
+          example: "889"
         organisation_type:
+          description: >-
+            This is a codelist field. Valid values come from the code list:
+            https://iatistandard.org/en/iati-standard/203/codelists/organisationtype/
           type: string
-          example: Regional NGO
+          example: "23"
         data_portal_url:
           type: string
           format: uri
@@ -1243,8 +1252,11 @@ components:
           type: string
           example: Aid Agency
         hq_country:
+          description: >-
+            This is a codelist field. Valid values come from the code list:
+            https://iatistandard.org/en/iati-standard/203/codelists/country/
           type: string
-          example: CO
+          example: GB
         organisation_identifier:
           type: string
           example: CO-ABC-123456
