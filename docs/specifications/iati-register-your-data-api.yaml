@@ -1213,6 +1213,7 @@ components:
             short_name:
               type: string
               example: aidagy
+              pattern: "^[a-z0-9_-]+$"
             organisation_identifier:
               type: string
               example: CO-ABC-123456
@@ -1539,6 +1540,7 @@ components:
         short_name:
           type: string
           example: aidagcy-activity-3
+          pattern: "^[a-z0-9_-]+$"
         source_type:
           type: string
           example: primary_source
