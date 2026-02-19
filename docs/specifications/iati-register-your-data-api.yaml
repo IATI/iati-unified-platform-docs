@@ -54,7 +54,7 @@ info:
   license:
     name: GNU Affero General Public Licence 3.0
     url: "https://www.gnu.org/licenses/agpl-3.0.en.html"
-  version: 0.9.11
+  version: 0.9.12
 servers:
   - url: "https://dev.api.registeryourdata.iatistandard.org/api/v1"
 # ===============================================================
@@ -1213,6 +1213,7 @@ components:
             short_name:
               type: string
               example: aidagy
+              pattern: "^[a-z0-9_-]+$"
             organisation_identifier:
               type: string
               example: CO-ABC-123456
@@ -1539,6 +1540,7 @@ components:
         short_name:
           type: string
           example: aidagcy-activity-3
+          pattern: "^[a-z0-9_-]+$"
         source_type:
           type: string
           example: primary_source
