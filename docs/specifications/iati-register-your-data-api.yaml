@@ -92,6 +92,15 @@ paths:
           schema:
             type: integer
             default: 100
+        - name: q
+          in: query
+          description: >-
+            The search query to filter the results. Searches the organisation's
+            human readable name field.
+          required: false
+          schema:
+            type: string
+            default: ""
       responses:
         "200":
           description: Successfully returned list of discoverable organisations.
