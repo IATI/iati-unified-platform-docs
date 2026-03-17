@@ -54,7 +54,7 @@ info:
   license:
     name: GNU Affero General Public Licence 3.0
     url: "https://www.gnu.org/licenses/agpl-3.0.en.html"
-  version: 0.9.12
+  version: 0.9.13
 servers:
   - url: "https://dev.api.registeryourdata.iatistandard.org/api/v1"
 # ===============================================================
@@ -92,6 +92,15 @@ paths:
           schema:
             type: integer
             default: 100
+        - name: q
+          in: query
+          description: >-
+            The search query to filter the results. Searches the organisation's
+            human readable name field.
+          required: false
+          schema:
+            type: string
+            default: ""
       responses:
         "200":
           description: Successfully returned list of discoverable organisations.
