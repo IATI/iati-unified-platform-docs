@@ -761,7 +761,11 @@ paths:
         - Users
     delete:
       operationId: remove_user_from_reporting_org
-      summary: Remove a user from an organisation.  This call will not remove the user's account.
+      summary: >-
+        Remove a user from an organisation.  This call will not remove the
+        user's account. If the user has a pending request to join the
+        organisation then this will reject that request. If the user is already
+        in the organisation then this will remove them from the organisation.
       parameters:
         - name: uid
           in: path
@@ -781,7 +785,8 @@ paths:
             example: 5401c7f4-e9fd-4ce3-b184-bfe1cb71a9f8
       responses:
         "200":
-          description: Successfully marked user as pending approval with an organisation.
+          description: >-
+            Successfully deleted a user's request to join an organisation or removed a user from an organisation.
           content:
             application/json:
               schema:
