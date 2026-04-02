@@ -3,11 +3,15 @@
 Register Your Data API
 ======================
 
-.. attention::
+The Register Your Data API allows developers to register IATI files automatically; this ensures that they will be included the data pipeline and made available across the range of IATI tools. 
 
-    The Register Your Data API was released in December 2025. If you believe that you will need to use it, please `contact us <https://iatistandard.org/en/guidance/get-support/>`_ to discuss your work.
+The RYD API might be for you if you are:
+* A tool developer who wants to include IATI file registration as part of the functionality available for your users. For example, if you make a tool that allows a user to create an IATI XML file, using the RYD API means that they can register it with IATI with just an IATI Account
+* A reporting organisation whose IATI XML URLs change regularly. Although stable URLs are preferable for consuming systems, this isn't always feasible and so the RYD API can help. 
 
-The Register Your Data API allows reporting organisations and third party tool developers to register IATI files, which will include them in the data pipeline and make the data available across the range of IATI tools.
+If you have only a few URLs, you can register these via your IATI Account. If you have a lot of URLs but they do not change frequently, the IATI Secretariat can help with a one-time bulk import.
+
+To request access to the RYD API, please `contact the IATI Secretariat <https://iatistandard.org/en/guidance/get-support/>`_.
 
 .. raw:: html
 
