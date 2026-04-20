@@ -14,7 +14,7 @@ Developer Guide (IATI Registry replacement)
 Architecture Overview
 ----------------------
 
-The IATI Registry will be replaced by IATI Account and changes to the IATI Dashboard in December 2025. There are a number of architectural differences between the new set-up and the current CKAN-based Registry. To aid in the transition of tools and infrastructure, this document describes some of those architectural differences and how applications will work in future.
+The IATI Registry was replaced by IATI Account and changes to the IATI Dashboard in December 2025. There are a number of architectural differences between the new set-up and the previous CKAN-based Registry. To aid in the transition of tools and infrastructure, this document describes some of those architectural differences and how applications should now interact with IATI.
 
 The diagram below shows a simplified architectural view of the new set-up. IATI reporting organisation and dataset metadata is stored in a CRM, and user data is stored in an Identity Service. 
 
@@ -31,22 +31,22 @@ OAuth2/OpenID Connect interactions with the Identity Service yield a short-lived
 
 * **Single Sign-On via OpenID Connect**: in this mode clients will log users into their application using OpenID Connect and will obtain an access token that will permit access to the organisation(s) associated with that user.  This will be available at launch.
 
-* **Machine-to-machine applications**: we will support connections using a Client Credentials OAuth2 grant.  These connections are far more limited in terms of the organisations and calls that can be made to the API.  We expect this to be available before the end of 2025.
+* **Machine-to-machine applications**: we will support connections using a Client Credentials OAuth2 grant.  These connections are far more limited in terms of the organisations and calls that can be made to the API.  We expect this to be available in Q3/Q4 2026.
 
-* **Account linking**: we eventually expect to support clients that want to retain their own login system but facilitate linking to an existing IATI account.  This will not be available until 2026.
+* **Account linking**: we eventually expect to support clients that want to retain their own login system but facilitate linking to an existing IATI account.  We expect this to be available in Q4 2026.
 
 Third party tool providers that would like to connect to IATI infrastructure cannot do this without being registered in advance with the IATI Secretariat.  Through this registration process we will discuss your needs, setup your application in the Identity Service, supply you with credentials to use when making calls to the Identity Service, and provide developer support.  
 
 .. note::
 
-    SSO will eventually be deployed across the IATI ecosystem and will provide access for users to a range of services via a single user account.  If your application logs in a user, that user will be logged into IATI and will also be able to access other tools.  The converse is also true - that a user may arrive at your application having already logged into IATI through SSO in another tool.  Applications should be designed to encounter these different scenarios and should support logout from IATI.
+    SSO is being rolled out across the IATI ecosystem and provides access for users to a range of services via a single user account.  If your application logs in a user, that user will be logged into IATI and will also be able to access other tools.  The converse is also true - that a user may arrive at your application having already logged into IATI through SSO in another tool.  Applications should be designed to encounter these different scenarios and should support logout from IATI.
 
 Restrictions
 ^^^^^^^^^^^^
-Our new `Register Your Data API <../register-your-data-api>`_ implements the same functionality as present in the current CKAN-based Registry, but we have implemented additional per-application controls.  As a result, the functionality available to third party tools will be less permissive.  In particular:
+The `Register Your Data API <../register-your-data-api>`_ implements the same functionality as present in the previous CKAN-based Registry, but we have implemented additional per-application controls.  As a result, the functionality available to third party tools is less permissive.  In particular:
 
-* Third party applications will not be able to create new reporting organisations in the CRM.
-* Applications using machine-to-machine OAuth2 connections will not be able to modify any user permissions or delete organisations.
+* Third party applications are not able to create new reporting organisations in the CRM.
+* Applications using machine-to-machine OAuth2 connections are not be able to modify any user permissions or delete organisations.
 
 
 Access tokens and API tokens
@@ -104,17 +104,21 @@ Per organisation user permissions are controlled with a system of *fine-grained*
 
 These can only be assigned to a user for a particular organisation via calls to the Register Your Data API by an organisation admin.
 
-The table below shows the fine-grained authorisations that these organisational roles have:
+There is a fourth role (**provider admin**) that will be discussed in the provider admin section below.
+
+The table below shows the fine-grained authorisations that these roles have:
 
 .. list-table::
-   :widths: 80 40 40 40
+   :widths: 80 40 40 40 40
    :header-rows: 1
 
    * - Authorisation
      - .. centered:: Admin
      - .. centered:: Editor
      - .. centered:: Contributor
+     - .. centered:: Provider Admin
    * - ``read-org``
+     - .. centered:: x
      - .. centered:: x
      - .. centered:: x
      - .. centered:: x
@@ -122,15 +126,19 @@ The table below shows the fine-grained authorisations that these organisational 
      - .. centered:: x
      - .. centered:: x
      -
+     - .. centered:: x
    * - ``delete-org``
      - .. centered:: x
+     -
      -
      -
    * - ``set-org-user-authz``
      - .. centered:: x
      -
      -
+     -
    * - ``read-dataset``
+     - .. centered:: x
      - .. centered:: x
      - .. centered:: x
      - .. centered:: x
@@ -138,18 +146,22 @@ The table below shows the fine-grained authorisations that these organisational 
      - .. centered:: x
      - .. centered:: x
      - .. centered:: x
+     - .. centered:: x
    * - ``update-dataset``
      - .. centered:: x
      - .. centered:: x
      -
+     - .. centered:: x
    * - ``update-dataset-visibility``
      - .. centered:: x
      -
      -
+     - .. centered:: x
    * - ``delete-dataset``
      - .. centered:: x
      - .. centered:: x
      -
+     - .. centered:: x
 
 Relative to an admin, an editor cannot:
 
@@ -162,11 +174,37 @@ Relative to an editor, a contributor cannot:
 * Update an organisation's metadata.
 * Delete a dataset.
 
-Super-administration and other enhanced permissions
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Super-administration
+^^^^^^^^^^^^^^^^^^^^
 IATI Secretariat staff will have a *superadmin* authorisation where their access tokens afford them full access to any organisation and dataset.  Superadmins can be identified by examining the ``role`` claim in the payload from the Identity Service userinfo endpoint and which should include ``iati_superadmin``.
 
-To support third parties in developing tools and supporting the community, we have implemented a system of enhanced permissions that we refer to as *Provider Admin*.  This functionality means that a reporting organisation who wants assistance through a third party tool provider will be able to authorise that application provider to have enhanced privileges.  This will give some limited admin access to an organisation's records.
+Provider admin
+^^^^^^^^^^^^^^
+To support third parties in developing tools and supporting the community, we have implemented a system of enhanced permissions that we refer to as *Provider Admin*.  Any third party tool can provide assistance to its users through some limited admin access to an organisation's records.  Eventually the authorisation for third party tools to access the records of a reporting organisation will be managed in IATI Account.
+
+There are three components to the Provider Admin model:
+
+1. A *tool* is a third party software application that is developed, maintained and offered by a *provider*.  Such tools are built to work with Register Your Data.  One *provider* may offer a number of tools to suit different business and user needs.
+2. Reporting organisations can give provider admin permission for *tool(s)* to access and edit its records.
+3. A user with an IATI Account can be attached to a *tool* and they then become an *admin user* of that tool.  When logged into IATI infrastructure these *admin users* will have permissions to make changes to any reporting organisation that has given permission to that *tool*.
+
+By way of example:
+
+* A *tool* called "Aid Support Tool" is provided by "Aid Support Company".  The IATI Secretariat add this information to Register Your Data.
+* A reporting organisation called "Aid Agency" gives permission for "Aid Support Tool" staff to update its dataset records.
+* A staff member, "Analyst", at "Aid Support Company" provides support for users of "Aid Support Tool".  The IATI Secretariat add this staff member to the "Aid Support Tool" in Register Your Data.
+* When "Analyst" logs into "Aid Support Tool" they will be able to read the datasets of "Aid Agency" and update these records via Register Your Data.
+* These changes will be recorded as having being performed by "Aid Agency" (as "Aid Support Company" is providing support to "Aid Agency" under contract).
+
+To setup a *tool* in Register Your Data and add/remove *admin users* please `contact us <https://iatistandard.org/en/guidance/get-support/>`_.
+
+There are some notable restrictions for provider admin:
+
+* A call to the ``/reporting-orgs`` endpoint in the :ref:`Register Your Data API <register-your-data-api>` will not return a list of all the reporting orgs that the user has access to via provider admin.  *Tools* should know the reporting organisation UUIDs for which their tool has access.
+* Per-tool permissions are not currently supported but may be implemented in the future.
+* An *admin user* for a *tool* cannot have an *admin*, *editor* or *contributor* role to access any reporting organisation.  In these cases users should have separate accounts: one for *admin user* work within *tools*, and one for any work that involves being an *admin*, *editor* or *contributor* of reporting orgs.
+* Eventually IATI Account will enable users to see which *tools* have been given provider admin permission, and to revoke and grant this permission.  It will not enable reporting organisation users to see the names of *admin users* of *tools*.
+* Lists of users with reporting organisation roles (*admin*, *editor* or *contributor*) will not include *tools*.
 
 Augmenting SSO user data
 ------------------------
@@ -195,7 +233,7 @@ CKAN used the naming system of *Publisher*, *Package* (and associated *Resource(
 
 Publisher
 ~~~~~~~~~
-A publisher will be described in future as a "**Reporting Organisation**"", following the IATI Standard ``iati-organisation``, ``iati-organisations`` and ``reporting-org`` `elements <iati_standard_reporting_org_>`_.  Any reference to a reporting organisation or a reporting org should be read in the same way as a "**publisher**" in CKAN.
+A publisher is now described as a "**Reporting Organisation**"", following the IATI Standard ``iati-organisation``, ``iati-organisations`` and ``reporting-org`` `elements <iati_standard_reporting_org_>`_.  Any reference to a reporting organisation or a reporting org should be read in the same way as a "**publisher**" in CKAN.
 
 .. _iati_standard_reporting_org: https://iatistandard.org/en/iati-standard/203/organisation-standard/iati-organisations/iati-organisation/reporting-org/
 
@@ -205,11 +243,11 @@ In CKAN a dataset was comprised of a package with one (or potentially more) reso
 
 Primary keys: organisation and dataset shortnames
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-We will move away from using organisation and dataset short names as primary keys and towards using UUIDs.  For example, rather than calling ``GET /reporting-orgs/bopinc``, you must use the UUID ``GET /reporting-orgs/08beaaaf-d007-402f-aca6-993a18082071``.  The short names still exist in the new CRM, but they will no longer be supported as primary keys.
+We are moving away from using organisation and dataset short names as primary keys and towards using UUIDs.  For example, rather than calling ``GET /reporting-orgs/bopinc``, you must use the UUID ``GET /reporting-orgs/08beaaaf-d007-402f-aca6-993a18082071``.  The short names still exist in the new CRM, but they will no longer be supported as primary keys.
 
 Metadata
 ^^^^^^^^
-The new CRM and Identity Service will support far fewer metadata fields than the CKAN-based Registry, particularly for users and reporting organisations.  For example, the Identity Service will no longer store fields for users to describe themselves (``about``).
+The new CRM and Identity Service supports far fewer metadata fields than the CKAN-based Registry, particularly for users and reporting organisations.  For example, the Identity Service no longer stores fields for users to describe themselves (``about``).
 
 The CRM will not support the following Publisher fields:
 
@@ -229,7 +267,7 @@ The CRM will not support the following Publisher fields:
 
 Unsupported features
 ^^^^^^^^^^^^^^^^^^^^
-CKAN supported the ability to *tag* packages and allowed the ability to *follow* particular publishers.  Both of these features will not be supported in the new set-up.
+CKAN supported the ability to *tag* packages and allowed the ability to *follow* particular publishers.  Both of these features are not supported in the new set-up.
 
 Relationships and Record Ownership
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -239,7 +277,7 @@ In the new set-up, as with CKAN, users will have permissions to administrate and
 
 Dataset Ownership
 ~~~~~~~~~~~~~~~~~
-In CKAN there is a strong relationship between a dataset and the user that created it.  As a result, when an organisation is deleted in CKAN, its datasets can still exist in IATI and be visible in the pipeline.  The new set-up removes this strong connection.  Datasets are owned by reporting organisations.  When a reporting organisation is deleted, its datasets will also be deleted.
+In CKAN there was a strong relationship between a dataset and the user that created it.  As a result, when an organisation was deleted in CKAN, its datasets could still exist in IATI and be visible in the pipeline.  The new set-up removes this strong connection.  Datasets are owned by reporting organisations.  When a reporting organisation is deleted, its datasets will also be deleted.
 
 Links will still exist between datasets and users, but no ownership is implied:
 
