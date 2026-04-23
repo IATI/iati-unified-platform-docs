@@ -1107,6 +1107,42 @@ paths:
             - "ryd:dataset:delete"
       tags:
         - Datasets
+  #
+  # Tool list endpoint
+  #
+  /tools:
+    get:
+      operationId: get_tool_list
+      summary: Get a list of third party tools that can work with Register Your Data.
+      description: >-
+        This endpoint is provided to help clients provide lists of third party
+        tools that are used for provider admin functionality.  The intention
+        behind this endpoint is to show tool metadata to end users.
+      responses:
+        "200":
+          description: Successfully fetched list of tools.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ToolList"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorised"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+      security:
+        - clientCredentials:
+            - "ryd"
+        - openIdConnect:
+            - "ryd"
+      tags:
+        - Provider admin
+  #
+  # Miscellaneous endpoints
+  #
   /licences:
     get:
       operationId: get_licences
@@ -1812,6 +1848,34 @@ components:
               - legacy
               - supported
               - preferred
+    #
+    # Tool schemas
+    #
+    ToolList:
+      description: "List of tools, their names and providers."
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        error:
+          type: object
+          example: null
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+                example: 3144083e-6506-4126-83ed-4f5d7c9d17a8
+              name:
+                type: string
+                example: Aid Support Tool
+              provider:
+                type: string
+                example: Aid Support Company
   # ===============================================================
   #
   # All responses
