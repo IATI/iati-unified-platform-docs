@@ -641,6 +641,152 @@ paths:
         - Reporting Orgs
         - Datasets
       #
+      # Tool permission endpoints for provider admin
+      #
+  "/reporting-orgs/{oid}/tools":
+    get:
+      operationId: get_reporting_org_tool_list
+      summary: Get list of tools that have permission to perform changes to this
+        organisation and its datasets.
+      parameters:
+        - name: oid
+          in: path
+          description: UUID of organisation.
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: 5401c7f4-e9fd-4ce3-b184-bfe1cb71a9f8
+      responses:
+        "200":
+          description: Successfully returned tool list.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportingOrgToolList"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorised"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+      security:
+        - openIdConnect:
+            - "ryd"
+            - "ryd:reporting_org:tool"
+      tags:
+        - Provider admin
+        - Reporting Orgs
+    post:
+      operationId: authorise_tool_permission_for_reporting_org
+      summary: >-
+        Authorise a tool to access a reporting org's records.
+      parameters:
+        - name: oid
+          in: path
+          description: UUID of organisation.
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: 5401c7f4-e9fd-4ce3-b184-bfe1cb71a9f8
+      requestBody:
+        description: Object containing the UUID of the tool that the user wants to
+          authorise.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tid:
+                  type: string
+                  format: uuid
+                  example: 3144083e-6506-4126-83ed-4f5d7c9d17a8
+      responses:
+        "201":
+          description: Successfully authorised tool.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BaseResponse"
+              example:
+                status: success
+                error: null
+                data: null
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorised"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+      security:
+        - openIdConnect:
+            - "ryd"
+            - "ryd:reporting_org:tool:update"
+      tags:
+        - Provider admin
+        - Reporting Orgs
+  "/reporting-orgs/{uid}/tools/{tid}":
+    delete:
+      operationId: revoke_tool_permission_for_reporting_org
+      summary: >-
+        Revoke the permission for a tool to access the records of a reporting
+        organisation via provider admin.
+      parameters:
+        - name: uid
+          in: path
+          description: UUID of user.
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: 6423b556-73de-4969-a2f1-91a38bca92b3
+        - name: tid
+          in: path
+          description: UUID of tool.
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: 3144083e-6506-4126-83ed-4f5d7c9d17a8
+      responses:
+        "200":
+          description: >-
+            Successfully revoked the permission for the tool.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BaseResponse"
+              example:
+                status: success
+                error: null
+                data: null
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorised"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+      security:
+        - openIdConnect:
+            - "ryd"
+            - "ryd:reporting_org:tool:update"
+      tags:
+        - Provider admin
+        - Reporting Orgs
+      #
       # User-focused resource endpoints
       #
   "/users/{uid}/reporting-org":
@@ -1586,9 +1732,33 @@ components:
               type: array
               items:
                 $ref: "#/components/schemas/OrgAction"
-    #
-    # Reporting org response schemas
-    #
+    ReportingOrgToolList:
+      description: List of tools that have been authorised for a reporting organisation.
+      properties:
+        status:
+          type: string
+          example: success
+        error:
+          type: object
+          example: null
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+                example: 3144083e-6506-4126-83ed-4f5d7c9d17a8
+              name:
+                type: string
+                example: Aid Support Tool
+              provider:
+                type: string
+                example: Aid Support Company
+                  #
+                  # Reporting org response schemas
+                  #
     DiscoverableReportingOrgList:
       description: Schema for a list of discoverable reporting organisations.
       properties:
@@ -2084,6 +2254,8 @@ components:
             "ryd:reporting_org:delete": Delete an organisation.
             "ryd:reporting_org:user": List the users associated with an organisation.
             "ryd:reporting_org:user:update": Update the users associated with an organisation.
+            "ryd:reporting_org:tool": List the tools that have permissions to access to organisation.
+            "ryd:reporting_org:tool:update": Update the tools that have permissions to access to organisation.
             "ryd:dataset": Create and read.
             "ryd:dataset:update": Update dataset metadata and URLs.
             "ryd:dataset:delete": Delete datasets.
