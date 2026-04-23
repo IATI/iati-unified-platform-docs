@@ -811,6 +811,41 @@ paths:
             - "ryd:reporting_org:user:update"
       tags:
         - Users
+  "/users/{uid}/roles":
+    get:
+      operationId: get_user_roles
+      summary: Get a list of the roles a user has.
+      parameters:
+        - name: uid
+          in: path
+          description: UUID of user.
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: 6423b556-73de-4969-a2f1-91a38bca92b3
+      responses:
+        "200":
+          description: Successfully returned roles list.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserRoles"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorised"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+      security:
+        - openIdConnect:
+            - "ryd"
+      tags:
+        - Users
       #
       # Dataset-focused resource endpoints
       #
@@ -1531,6 +1566,46 @@ components:
                   - editor
                   - contributor
                   - contributor_pending
+    UserRoles:
+      description: List of roles that a user has.
+      properties:
+        status:
+          type: string
+          example: success
+        error:
+          type: object
+          example: null
+        data:
+          type: object
+          properties:
+            superadmin:
+              type: boolean
+              example: false
+            tools:
+              type: array
+              items:
+                type: string
+                format: uuid
+                example: 3144083e-6506-4126-83ed-4f5d7c9d17a8
+            reporting_orgs:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    example: 5401c7f4-e9fd-4ce3-b184-bfe1cb71a9f8
+                  role:
+                    type: string
+                    example: provider_admin
+                    enum:
+                      - admin
+                      - editor
+                      - contributor
+                      - contributor_pending
+                      - provider_admin
+
     #
     # Dataset schemas
     #
