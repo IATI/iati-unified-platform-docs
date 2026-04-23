@@ -57,6 +57,7 @@ info:
   version: 0.9.14
 servers:
   - url: "https://dev.api.registeryourdata.iatistandard.org/api/v1"
+  - url: "https://api.registeryourdata.iatistandard.org/api/v1"
 # ===============================================================
 #
 # Endpoints
