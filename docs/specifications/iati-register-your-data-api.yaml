@@ -846,6 +846,50 @@ paths:
             - "ryd"
       tags:
         - Users
+  "/users/{uid}/roles/reporting-org-permissions/{oid}":
+    get:
+      operationId: get_user_fga_for_reporting_org
+      summary: Get a list of the fine grained authorisations a user has for a given
+        reporting org.
+      parameters:
+        - name: uid
+          in: path
+          description: UUID of user.
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: 6423b556-73de-4969-a2f1-91a38bca92b3
+        - name: oid
+          in: path
+          description: UUID of organisation.
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: 5401c7f4-e9fd-4ce3-b184-bfe1cb71a9f8
+      responses:
+        "200":
+          description: Successfully returned fine-grained authorisations list.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserFineGrainedAuthorisationsForReportingOrg"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorised"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+      security:
+        - openIdConnect:
+            - "ryd"
+      tags:
+        - Users
       #
       # Dataset-focused resource endpoints
       #
@@ -1605,6 +1649,31 @@ components:
                       - contributor
                       - contributor_pending
                       - provider_admin
+    UserFineGrainedAuthorisationsForReportingOrg:
+      description: List of fine-grained authorisations that a user has for a reporting org.
+      properties:
+        status:
+          type: string
+          example: success
+        error:
+          type: object
+          example: null
+        data:
+          type: array
+          items:
+            type: string
+            example: read-org
+            enum:
+              - read-org
+              - update-org
+              - delete-org
+              - set-org-user-authz
+              - set-org-tool-authz
+              - read-dataset
+              - create-dataset
+              - update-dataset
+              - update-dataset-visibility
+              - delete-dataset
 
     #
     # Dataset schemas
