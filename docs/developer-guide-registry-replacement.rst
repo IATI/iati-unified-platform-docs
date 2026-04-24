@@ -137,6 +137,11 @@ The table below shows the fine-grained authorisations that these roles have:
      -
      -
      -
+   * - ``set-org-tool-authz``
+     - .. centered:: x
+     - .. centered:: x
+     -
+     -
    * - ``read-dataset``
      - .. centered:: x
      - .. centered:: x
@@ -172,6 +177,7 @@ Relative to an admin, an editor cannot:
 Relative to an editor, a contributor cannot:
 
 * Update an organisation's metadata.
+* Authorise a tool to access the records of this reporting organisation (or revoke that access).
 * Delete a dataset.
 
 Super-administration
