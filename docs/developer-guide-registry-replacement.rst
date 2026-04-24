@@ -207,9 +207,9 @@ To setup a *tool* in Register Your Data and add/remove *admin users* please `con
 
 There are some notable restrictions for provider admin:
 
-* A call to the ``/reporting-orgs`` endpoint in the :ref:`Register Your Data API <register-your-data-api>` will not return a list of all the reporting orgs that the user has access to via provider admin.  *Tools* should know the reporting organisation UUIDs for which their tool has access.
-* Per-tool permissions are not currently supported but may be implemented in the future.
 * An *admin user* for a *tool* cannot have an *admin*, *editor* or *contributor* role to access any reporting organisation.  In these cases users should have separate accounts: one for *admin user* work within *tools*, and one for any work that involves being an *admin*, *editor* or *contributor* of reporting orgs.
+* A call to the ``/reporting-orgs`` endpoint in the :ref:`Register Your Data API <register-your-data-api>` will not return a list of all the reporting orgs that the user has access to via provider admin.  *Tools* can call the ``/users/{uid}/roles`` endpoint which will provide broad information on the permissions a user has: superadmin status, the tools for which the specified user is an admin user, and the reporting orgs and roles the user has for them.  If the specified user is an *admin user* for a *tool* then this will only include *provider_admin* roles, otherwise, it will show regular roles.
+* Per-tool permissions are not currently supported but may be implemented in the future.
 * Eventually IATI Account will enable users to see which *tools* have been given provider admin permission, and to revoke and grant this permission.  It will not enable reporting organisation users to see the names of *admin users* of *tools*.
 * Lists of users with reporting organisation roles (*admin*, *editor* or *contributor*) will not include *tools*.
 
