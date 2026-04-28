@@ -137,6 +137,11 @@ The table below shows the fine-grained authorisations that these roles have:
      -
      -
      -
+   * - ``set-org-tool-authz``
+     - .. centered:: x
+     - .. centered:: x
+     -
+     -
    * - ``read-dataset``
      - .. centered:: x
      - .. centered:: x
@@ -172,6 +177,7 @@ Relative to an admin, an editor cannot:
 Relative to an editor, a contributor cannot:
 
 * Update an organisation's metadata.
+* Authorise a tool to access the records of this reporting organisation (or revoke that access).
 * Delete a dataset.
 
 Super-administration
@@ -186,7 +192,7 @@ There are three components to the Provider Admin model:
 
 1. A *tool* is a third party software application that is developed, maintained and offered by a *provider*.  Such tools are built to work with Register Your Data.  One *provider* may offer a number of tools to suit different business and user needs.
 2. Reporting organisations can give provider admin permission for *tool(s)* to access and edit its records.
-3. A user with an IATI Account can be attached to a *tool* and they then become an *admin user* of that tool.  When logged into IATI infrastructure these *admin users* will have permissions to make changes to any reporting organisation that has given permission to that *tool*.
+3. A user with an IATI Account can be attached to a *tool* and they then become an *admin user* of that tool.  When logged into IATI infrastructure - **and when the access token is scoped to include that tool**, these *admin users* will have permissions to make changes to any reporting organisation that has given permission to that *tool*.  Normally the access token scoping will be achieved by calling RYD with an access token that has been obtained by a call to the identity service from that tool.  This means that a tool admin user cannot use provider admin permissions in a different tool.
 
 By way of example:
 
@@ -195,14 +201,15 @@ By way of example:
 * A staff member, "Analyst", at "Aid Support Company" provides support for users of "Aid Support Tool".  The IATI Secretariat add this staff member to the "Aid Support Tool" in Register Your Data.
 * When "Analyst" logs into "Aid Support Tool" they will be able to read the datasets of "Aid Agency" and update these records via Register Your Data.
 * These changes will be recorded as having being performed by "Aid Agency" (as "Aid Support Company" is providing support to "Aid Agency" under contract).
+* As "Analyst" has logged in via single-sign on, they could then log into another IATI tool, for example, IATI Account.  However, "Analyst" will not have provider admin within IATI Account and so this functionality will not be available in that tool.
 
 To setup a *tool* in Register Your Data and add/remove *admin users* please `contact us <https://iatistandard.org/en/guidance/get-support/>`_.
 
 There are some notable restrictions for provider admin:
 
-* A call to the ``/reporting-orgs`` endpoint in the :ref:`Register Your Data API <register-your-data-api>` will not return a list of all the reporting orgs that the user has access to via provider admin.  *Tools* should know the reporting organisation UUIDs for which their tool has access.
-* Per-tool permissions are not currently supported but may be implemented in the future.
 * An *admin user* for a *tool* cannot have an *admin*, *editor* or *contributor* role to access any reporting organisation.  In these cases users should have separate accounts: one for *admin user* work within *tools*, and one for any work that involves being an *admin*, *editor* or *contributor* of reporting orgs.
+* A call to the ``/reporting-orgs`` endpoint in the :ref:`Register Your Data API <register-your-data-api>` will not return a list of all the reporting orgs that the user has access to via provider admin.  *Tools* can call the ``/users/{uid}/roles`` endpoint which will provide broad information on the permissions a user has: superadmin status, the tools for which the specified user is an admin user, and the reporting orgs and roles the user has for them.  If the specified user is an *admin user* for a *tool* then this will only include *provider_admin* roles, otherwise, it will show regular roles.
+* Per-tool permissions are not currently supported but may be implemented in the future.
 * Eventually IATI Account will enable users to see which *tools* have been given provider admin permission, and to revoke and grant this permission.  It will not enable reporting organisation users to see the names of *admin users* of *tools*.
 * Lists of users with reporting organisation roles (*admin*, *editor* or *contributor*) will not include *tools*.
 
