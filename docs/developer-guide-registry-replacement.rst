@@ -155,7 +155,7 @@ The table below shows the fine-grained authorisations that these roles have:
    * - ``update-dataset``
      - .. centered:: x
      - .. centered:: x
-     -
+     - .. centered:: x
      - .. centered:: x
    * - ``update-dataset-visibility``
      - .. centered:: x
