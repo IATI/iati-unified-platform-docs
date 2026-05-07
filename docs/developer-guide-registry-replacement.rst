@@ -159,7 +159,7 @@ The table below shows the fine-grained authorisations that these roles have:
      - .. centered:: x
    * - ``update-dataset-visibility``
      - .. centered:: x
-     -
+     - .. centered:: x
      -
      - .. centered:: x
    * - ``delete-dataset``
