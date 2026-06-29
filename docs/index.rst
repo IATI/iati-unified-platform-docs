@@ -26,7 +26,7 @@ Reporting organisations can manage their IATI file information in `IATI Account 
 Bulk Data Service
 ~~~~~~~~~~~~~~~~~
 
-The Bulk Data Service runs on a continuous basis to maintain a copy of every file listed in the IATI Registry. Changes to published data can be reflected in as little as an hour, but may take up to 24 hours depending on the reporting organisation's technical configuration. Bulk downloads, debug information and download session listings are available from the Bulk Data Service. 
+The Bulk Data Service runs on a continuous basis to maintain a copy of every dataset registered with IATI. Changes to published data can be reflected in as little as an hour, but may take up to 24 hours depending on the reporting organisation's technical configuration. Bulk downloads, debug information and download session listings are available from the Bulk Data Service. 
 
 Validator
 ~~~~~~~~~
